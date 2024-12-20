@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "array": "cpp",
+        "string": "cpp",
+        "string_view": "cpp",
+        "cstdlib": "c",
+        "gtk.h": "c",
+        "div.h": "c",
+        "primitives.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
+}

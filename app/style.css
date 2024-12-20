@@ -1,0 +1,28 @@
+/* DEBUG */
+box {
+    border: 1px solid #d0867025; 
+}
+
+/* Code */
+#TopBar {
+    min-height: 48px; 
+}
+
+#Menu {
+    min-width: 48px; 
+    padding-top: 16px;    
+}
+
+#Hierarchy {
+    min-width: 384px; 
+    padding: 16px;
+
+    border: 1px solid #d0707086;
+}
+#Hierarchy #Header {
+    font-size: 24px;
+}
+#MenuIcon {
+    min-width: 32px; 
+    min-height: 32px; 
+}

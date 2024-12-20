@@ -1,0 +1,1 @@
+GtkWidget *Menu(GtkWidget *parent);
