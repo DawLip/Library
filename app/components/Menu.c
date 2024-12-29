@@ -12,7 +12,6 @@ GtkWidget *MenuIcon(GtkWidget *parent, char *name) {
 
     GtkGestureClick *click_gesture = gtk_gesture_click_new();
     g_signal_connect(click_gesture, "pressed", G_CALLBACK(on_MenuIcon_click), NULL);
-
     gtk_widget_add_controller(menuIcon, GTK_EVENT_CONTROLLER(click_gesture));
 
     return menuIcon;

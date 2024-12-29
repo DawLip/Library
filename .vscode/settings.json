@@ -6,7 +6,11 @@
         "cstdlib": "c",
         "gtk.h": "c",
         "div.h": "c",
-        "primitives.h": "c"
+        "primitives.h": "c",
+        "components.h": "c",
+        "data_types.h": "c",
+        "algorithm": "c",
+        "typeinfo": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
