@@ -46,6 +46,7 @@ static void activate(GtkApplication *app) {
 
 void data_init() {
   users_load_csv();
+  books_load_csv();
   dataUI_init();
 }
 

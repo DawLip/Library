@@ -32,7 +32,7 @@ void users_add(char *name, char *surname, char *pesel) {
 void users_print(){
     User *curr = users;
     printf("Users:\n");
-    while(curr->next != NULL) {
+    while(curr != NULL) {
         printf("%d: %s %s %s\n", curr->id, curr->name, curr->surname, curr->pesel);
         curr = curr->next;
     }

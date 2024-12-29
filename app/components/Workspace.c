@@ -4,24 +4,60 @@
 #include "../primitives/primitives.h"
 #include "../data_types/data_types.h"
 
-GtkWidget *WorkspaceName;
-GtkWidget *WorkspaceSurname;
-GtkWidget *WorkspacePesel;
+GtkWidget *workspaceUsers;
+GtkWidget *WorkspaceUsersName;
+GtkWidget *WorkspaceUsersSurname;
+GtkWidget *WorkspaceUsersPesel;
+
+GtkWidget *workspaceBooks;
+GtkWidget *WorkspaceBooksName;
+GtkWidget *WorkspaceBooksAuthor;
+
+GtkWidget *WorkspaceUsers(GtkWidget *parent) {
+    GtkWidget *workspaceUsers = Div(parent, "Workspace", "v", "vh", 0);
+
+    WorkspaceUsersName = Text(workspaceUsers, "WorkspaceName", "", 0);
+    WorkspaceUsersSurname = Text(workspaceUsers, "WorkspaceSurname", "", 0);
+    WorkspaceUsersPesel = Text(workspaceUsers, "WorkspacePesel", "", 0);
+  
+    return workspaceUsers;
+}
+
+GtkWidget *WorkspaceBooks(GtkWidget *parent) {
+    GtkWidget *workspaceBooks = Div(parent, "Workspace", "v", "vh", 0);
+
+    WorkspaceBooksName = Text(workspaceBooks, "WorkspaceName", "", 0);
+    WorkspaceBooksAuthor = Text(workspaceBooks, "WorkspaceAuthor", "", 0);
+  
+    return workspaceBooks;
+}
 
 GtkWidget *Workspace(GtkWidget *parent) {
-    GtkWidget *workspace = Div(parent, "Workspace", "v", "vh", 0);
+    workspaceUsers=WorkspaceUsers(parent);
+    workspaceBooks=WorkspaceBooks(parent);
 
-    WorkspaceName = Text(workspace, "WorkspaceName", "", 0);
-    WorkspaceSurname = Text(workspace, "WorkspaceSurname", "", 0);
-    WorkspacePesel = Text(workspace, "WorkspacePesel", "", 0);
-  
-    return workspace;
+    gtk_widget_hide(workspaceBooks);
 }
 
 void Workspace_rerender() {
-    User *user = dataUI->selectedUser;
+    if(dataUI->currWindow==USERS){
+        gtk_widget_hide(workspaceBooks);
+        gtk_widget_show(workspaceUsers);
+    } else if(dataUI->currWindow==BOOKS){
+        gtk_widget_hide(workspaceUsers);
+        gtk_widget_show(workspaceBooks);
+    }
+
+    if(dataUI->currWindow==USERS && dataUI->selectedUser != NULL){
+        User *user = dataUI->selectedUser;
     
-    gtk_label_set_text(WorkspaceName, user->name);
-    gtk_label_set_text(WorkspaceSurname, user->surname);
-    gtk_label_set_text(WorkspacePesel, user->pesel);
+        gtk_label_set_text(WorkspaceUsersName, user->name);
+        gtk_label_set_text(WorkspaceUsersSurname, user->surname);
+        gtk_label_set_text(WorkspaceUsersPesel, user->pesel);
+    } else if(dataUI->currWindow==BOOKS && dataUI->selectedBook){
+        Book *book = dataUI->selectedBook;
+    
+        gtk_label_set_text(WorkspaceBooksName, book->name);
+        gtk_label_set_text(WorkspaceBooksAuthor, book->author);
+    }
 }
