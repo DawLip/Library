@@ -13,13 +13,13 @@ box {
     padding-top: 16px;    
 }
 
-#Hierarchy {
+#HierarchyWrapper {
     min-width: 384px; 
     padding: 16px;
 
     border: 1px solid #d0707086;
 }
-#Hierarchy #Header {
+#HierarchyWrapper #Header {
     font-size: 24px;
 }
 #MenuIcon {

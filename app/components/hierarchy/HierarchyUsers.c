@@ -20,6 +20,23 @@ GtkWidget *HierarchyUsersItem(GtkWidget *parent, User *user){
   return hierarchyItem;
 }
 
+void on_UserAddButton_click(GtkGestureClick *gesture, int n_press, double x, double y, User *user) {
+    users_add("name", "surname", "pesel");
+
+    Hierarchy_rerender();
+    Workspace_rerender();
+}
+
+GtkWidget *UserAddButton(GtkWidget *parent){
+  GtkWidget *userAddButton = Div(parent, "UserAddButton", "v", "", 0);
+
+  GtkGesture *click = gtk_gesture_click_new();
+  g_signal_connect(click, "pressed", G_CALLBACK(on_UserAddButton_click), NULL);
+  gtk_widget_add_controller(userAddButton, GTK_EVENT_CONTROLLER(click));
+
+  Text(userAddButton, "UserAddButtonLabel", "Add user", 0);
+}
+
 GtkWidget *HierarchyUsers(GtkWidget *parent){
   GtkWidget *hierarchyUsers = Div(parent, "Hierarchy", "v", "", 0);
 
@@ -30,6 +47,8 @@ GtkWidget *HierarchyUsers(GtkWidget *parent){
     HierarchyUsersItem(hierarchyUsers, curr);
     curr = curr->next;
   }
+
+  UserAddButton(hierarchyUsers);
 
   return hierarchyUsers;
 }

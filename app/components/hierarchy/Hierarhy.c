@@ -4,22 +4,27 @@
 #include "../../primitives/primitives.h"
 #include "../../data_types/data_types.h"
 
-GtkWidget *hierarchyUsers;
-GtkWidget *hierarchyBooks;
+GtkWidget *hierarchyWrapper;
+GtkWidget *hierarchy;
+GtkWidget *parent;
 
-GtkWidget *Hierarchy(GtkWidget *parent){
-  hierarchyUsers=HierarchyUsers(parent);
-  hierarchyBooks=HierarchyBooks(parent);
-
-  gtk_widget_hide(hierarchyBooks);
+void Hierarchy_render(){
+  if(dataUI->currWindow == USERS) hierarchy=HierarchyUsers(hierarchyWrapper);
+  else if(dataUI->currWindow == BOOKS) hierarchy=HierarchyBooks(hierarchyWrapper);
 }
 
 void Hierarchy_rerender(){
-  if(dataUI->currWindow==USERS){
-    gtk_widget_hide(hierarchyBooks);
-    gtk_widget_show(hierarchyUsers);
-  } else if(dataUI->currWindow==BOOKS){
-    gtk_widget_hide(hierarchyUsers);
-    gtk_widget_show(hierarchyBooks);
-  }
+  gtk_box_remove(hierarchyWrapper, hierarchy);
+  
+  Hierarchy_render();
+}
+
+GtkWidget *Hierarchy(GtkWidget *p){
+  if(parent==NULL) parent = p;
+
+  hierarchyWrapper = Div(parent, "HierarchyWrapper", "v", "", 0);
+
+  Hierarchy_render();
+
+  return hierarchyWrapper;
 }
