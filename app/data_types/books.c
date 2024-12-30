@@ -57,7 +57,6 @@ void books_load_csv(){
             printf("Błąd w parsowaniu linii: %s\n", line);
         }
     }
-    books_print();
 
     fclose(file);
 }

@@ -60,7 +60,6 @@ void users_load_csv() {
             printf("Błąd w parsowaniu linii: %s\n", line);
         }
     }
-    users_print();
 
     fclose(file);
 }

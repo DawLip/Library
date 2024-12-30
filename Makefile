@@ -61,7 +61,7 @@
 # run: $(TARGET)
 # ./$(TARGET)
 CC = gcc
-CFLAGS = `pkg-config --cflags gtk4` -Wall -Wextra -g
+CFLAGS = `pkg-config --cflags gtk4` -Wall -Wextra -g -w
 LDFLAGS = `pkg-config --libs gtk4`
 
 # Ścieżki
