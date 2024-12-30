@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "./data_types.h"
+#include "../components/components.h"
 
 User *users;
 
@@ -26,7 +27,6 @@ void users_add(char *name, char *surname, char *pesel) {
     while(curr->next != NULL) curr = curr->next;
     new_user->id = curr->id+1;
     curr->next = new_user;
-
 }
 
 void users_print(){

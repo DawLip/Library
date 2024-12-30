@@ -32,6 +32,24 @@ GtkWidget *Input(GtkWidget *parent, char* value) {
     gtk_box_append(GTK_BOX(parent), entry);
 }
 
+void removeUser(GtkButton *button, gpointer user_data) {
+    User *curr = users;
+    User *selectedUser = dataUI->selectedUser;
+
+    if(curr == selectedUser) users=users->next;
+    else {
+        while(curr->next != selectedUser) curr = curr->next;
+
+        User *next = curr->next;
+        curr->next = next->next;
+    }
+
+    dataUI->selectedUser = NULL;
+
+    Hierarchy_rerender();
+    Workspace_rerender();
+}
+
 GtkWidget *WorkspaceUsers(GtkWidget *parent) {
     GtkWidget *workspaceUsers = Div(parent, "Workspace", "v", "vh", 0);
     if(dataUI->selectedUser != NULL){
@@ -40,6 +58,10 @@ GtkWidget *WorkspaceUsers(GtkWidget *parent) {
         Input(workspaceUsers, user->surname);
         Input(workspaceUsers, user->pesel);
     }
+
+    GtkWidget *button = gtk_button_new_with_label("Remove");
+    g_signal_connect(button, "clicked", G_CALLBACK(removeUser), NULL);
+    gtk_box_append(workspaceUsers, button);
     
     return workspaceUsers;
 }
