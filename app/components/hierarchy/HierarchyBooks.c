@@ -2,6 +2,23 @@
 #include "../../primitives/primitives.h"
 #include "../../data_types/data_types.h"
 
+void on_BookAddButton_click(GtkGestureClick *gesture, int n_press, double x, double y, Book *book) {
+    books_add("name", "author");
+
+    Hierarchy_rerender();
+    Workspace_rerender();
+}
+
+GtkWidget *BookAddButton(GtkWidget *parent){
+  GtkWidget *bookAddButton = Div(parent, "BookAddButton", "v", "", 0);
+
+  GtkGesture *click = gtk_gesture_click_new();
+  g_signal_connect(click, "pressed", G_CALLBACK(on_BookAddButton_click), NULL);
+  gtk_widget_add_controller(bookAddButton, GTK_EVENT_CONTROLLER(click));
+
+  Text(bookAddButton, "BookAddButtonLabel", "Add book", 0);
+}
+
 void on_HierarchyBookItem_click(GtkGestureClick *gesture, int n_press, double x, double y, Book *book) {
     dataUI_set_selectedBook(book);
 }
@@ -28,6 +45,8 @@ GtkWidget *HierarchyBooks(GtkWidget *parent){
     HierarchyBooksItem(hierarchyBooks, curr);
     curr = curr->next;
   }
+
+  BookAddButton(hierarchyBooks);
 
   return hierarchyBooks;
 }

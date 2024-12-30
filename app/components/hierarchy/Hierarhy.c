@@ -23,8 +23,7 @@ GtkWidget *Hierarchy(GtkWidget *p){
   if(parent==NULL) parent = p;
 
   hierarchyWrapper = Div(parent, "HierarchyWrapper", "v", "", 0);
-
   Hierarchy_render();
-
+  
   return hierarchyWrapper;
 }
