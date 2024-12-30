@@ -26,7 +26,6 @@ typedef struct {
     char name[50];
     char author[50];
 
-    // struct User *prev;
     struct User *next;
 } Book;
 
