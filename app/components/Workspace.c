@@ -50,6 +50,24 @@ void removeUser(GtkButton *button, gpointer user_data) {
     Workspace_rerender();
 }
 
+void removeBook(GtkButton *button, gpointer user_data) {
+    Book *curr = books;
+    Book *selectedBook = dataUI->selectedBook;
+
+    if(curr == selectedBook) books=books->next;
+    else {
+        while(curr->next != selectedBook) curr = curr->next;
+
+        Book *next = curr->next;
+        curr->next = next->next;
+    }
+
+    dataUI->selectedBook = NULL;
+
+    Hierarchy_rerender();
+    Workspace_rerender();
+}
+
 GtkWidget *WorkspaceUsers(GtkWidget *parent) {
     GtkWidget *workspaceUsers = Div(parent, "Workspace", "v", "vh", 0);
     if(dataUI->selectedUser != NULL){
@@ -73,6 +91,10 @@ GtkWidget *WorkspaceBooks(GtkWidget *parent) {
         Input(workspaceBooks, book->name);
         Input(workspaceBooks, book->author);
     }
+
+    GtkWidget *button = gtk_button_new_with_label("Remove");
+    g_signal_connect(button, "clicked", removeBook, NULL);
+    gtk_box_append(workspaceBooks, button);
     
     return workspaceBooks;
 }
