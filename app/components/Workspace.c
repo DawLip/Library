@@ -75,6 +75,9 @@ GtkWidget *WorkspaceUsers(GtkWidget *parent) {
         Input(workspaceUsers, user->name);
         Input(workspaceUsers, user->surname);
         Input(workspaceUsers, user->pesel);
+        Input(workspaceUsers, user->adress);
+        Input(workspaceUsers, user->email);
+        Input(workspaceUsers, user->phone);
     }
 
     GtkWidget *button = gtk_button_new_with_label("Remove");
@@ -90,6 +93,8 @@ GtkWidget *WorkspaceBooks(GtkWidget *parent) {
         Book *book = dataUI->selectedBook;
         Input(workspaceBooks, book->name);
         Input(workspaceBooks, book->author);
+        Input(workspaceBooks, book->isbn);
+        Input(workspaceBooks, book->year);
     }
 
     GtkWidget *button = gtk_button_new_with_label("Remove");

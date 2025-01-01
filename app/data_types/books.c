@@ -1,18 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "./data_types.h"
 
 Book *books;
 
-void books_add(char *name, char *author) {
+void books_add(char *name, char *author, char *isbn, char *year, int available) {
     Book *curr = books;
     Book *new_book;
     new_book =(Book*)malloc(sizeof(Book));
     
     strcpy(new_book->name, name);
     strcpy(new_book->author, author);
+    strcpy(new_book->isbn, isbn);
+    strcpy(new_book->year, year);
+    new_book->available=available;
 
     new_book->next = NULL;
 
@@ -43,6 +47,9 @@ void books_load_csv(){
     char line[512];
     char *name;
     char *author;
+    char *isbn;
+    char *year;
+    int available;
 
     if(file == NULL) { perror("Nie można otworzyć pliku"); return; }
 
@@ -51,11 +58,10 @@ void books_load_csv(){
 
         name = strtok(line, ",");
         author = strtok(NULL, ",");
-        if (name != NULL && author != NULL) {
-            books_add(name, author);
-        } else {
-            printf("Błąd w parsowaniu linii: %s\n", line);
-        }
+        isbn = strtok(NULL, ",");
+        year = strtok(NULL, ",");
+        available = atoi(strtok(NULL, ","));
+        books_add(name, author, isbn, year, available);
     }
 
     fclose(file);

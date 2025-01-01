@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdio.h>
+#include <stdbool.h>
 
 // User
 typedef struct {
@@ -8,15 +9,17 @@ typedef struct {
 
     char name[50];
     char surname[50];
-    char pesel[12];
-
+    char pesel[13];
+    char adress[100];
+    char email[50];
+    char phone[16];
     // struct User *prev;
     struct User *next;
 } User;
 
 extern User *users;
 
-void users_add(char *name, char *surname, char *pesel);
+void users_add(char *name, char *surname, char *pesel, char *adress, char *email, char *phone);
 void users_load_csv();
 
 //Book
@@ -25,13 +28,16 @@ typedef struct {
 
     char name[50];
     char author[50];
+    char isbn[20];
+    char year[7];
+    int available;
 
-    struct User *next;
+    struct Book *next;
 } Book;
 
 extern Book *books;
 
-void books_add(char *name, char *author);
+void books_add(char *name, char *author, char *isbn, char *year, int available);
 void books_load_csv();
 
 // DataUI

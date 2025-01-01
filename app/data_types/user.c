@@ -7,7 +7,7 @@
 
 User *users;
 
-void users_add(char *name, char *surname, char *pesel) {
+void users_add(char *name, char *surname, char *pesel, char *adress, char *email, char *phone) {
     User *curr = users;
     User *new_user;
     new_user =(User *)malloc(sizeof(User));
@@ -15,7 +15,10 @@ void users_add(char *name, char *surname, char *pesel) {
     strcpy(new_user->name, name);
     strcpy(new_user->surname, surname);
     strcpy(new_user->pesel, pesel);
-
+    strcpy(new_user->adress, adress);
+    strcpy(new_user->email, email);
+    strcpy(new_user->phone, phone);
+    
     new_user->next = NULL;
 
     if(users==NULL) {
@@ -45,6 +48,9 @@ void users_load_csv() {
     char *name;
     char *surname;
     char *pesel;
+    char *adress;
+    char *email;
+    char *phone;
 
     if(file == NULL) { perror("Nie można otworzyć pliku"); return; }
 
@@ -54,11 +60,10 @@ void users_load_csv() {
         name = strtok(line, ",");
         surname = strtok(NULL, ",");
         pesel = strtok(NULL, ",");
-        if (name != NULL && surname != NULL && pesel != NULL) {
-            users_add(name, surname, pesel);
-        } else {
-            printf("Błąd w parsowaniu linii: %s\n", line);
-        }
+        adress = strtok(NULL, ",");
+        email = strtok(NULL, ",");
+        phone = strtok(NULL, ",");
+        users_add(name, surname, pesel, adress, email, phone);
     }
 
     fclose(file);

@@ -21,7 +21,7 @@ GtkWidget *HierarchyUsersItem(GtkWidget *parent, User *user){
 }
 
 void on_UserAddButton_click(GtkGestureClick *gesture, int n_press, double x, double y, User *user) {
-    users_add("name", "surname", "pesel");
+    users_add("name", "surname", "pesel", "adress", "email", "phone");
 
     Hierarchy_rerender();
     Workspace_rerender();
