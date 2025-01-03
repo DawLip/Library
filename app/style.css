@@ -1,5 +1,5 @@
 /* DEBUG */
-/* #Workspace box {
+/* box {
   border: 1px solid #d0867025; 
 } */
 
@@ -22,6 +22,49 @@
 	border: none;     
 	outline: none;      
 	background-color: transparent; 
+}
+
+/* Welcome ============================ */
+#Welcome {
+	padding: 64px;
+	background: #1C1A30;
+}
+
+#Welcome #LogoB {
+	color: rgba(71, 193, 107, 0.90);
+	font-size: 64px;
+	font-weight: 700;
+}
+#Welcome #LogoRest {
+	color: rgba(210, 209, 227, 0.90);
+	font-size: 40px;
+	font-weight: 700;
+	margin-top: 12px;
+}
+#Welcome #NewLibraryBtn, #Welcome #LoadLibraryBtn {
+	padding: 4px 12px;
+	background: rgba(71, 193, 107, 0.90);
+
+
+	font-size: 12px;
+	font-weight: 600;
+}
+#Welcome #YourProjectsLabel {
+	color: rgba(71, 193, 107, 0.90);
+	font-size: 24px;
+	font-weight: 700;
+}
+#Welcome #Select {
+	min-width: 16px;
+	min-height: 16px;
+}
+#Welcome #YourProjectsListItemName {
+	font-size: 16px;
+	font-weight: 400;
+}
+#Welcome #YourProjectsListItemDate {
+	font-size: 12px;
+	font-weight: 400;
 }
 /* TopBar ============================= */
 #TopBar {

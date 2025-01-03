@@ -43,7 +43,12 @@ void users_print(){
 }
 
 void users_load_csv() {
-    FILE *file = fopen("./app/users.csv", "r");
+    char src[200]="";
+    strcat(src, "./app/saves/");
+    strcat(src, dataUI->projectName);
+    strcat(src, "/users.csv");
+
+    FILE *file = fopen(src, "r");
     char line[256];
     char *name;
     char *surname;

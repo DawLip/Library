@@ -25,12 +25,16 @@ void on_HierarchyBookItem_click(GtkGestureClick *gesture, int n_press, double x,
 }
 
 GtkWidget *HierarchyBooksItem(GtkWidget *parent, Book *book){
-  GtkWidget *hierarchyItem = Div(parent, "HierarchyItem", "h", "", 0);
+  GtkWidget *hierarchyItem = Div(parent, "HierarchyItem", "h", "", 4);
+
+  char book_id[15];
+  sprintf(book_id, "%d", book->id);
 
   GtkGesture *click = gtk_gesture_click_new();
   g_signal_connect(click, "pressed", G_CALLBACK(on_HierarchyBookItem_click), book);
   gtk_widget_add_controller(hierarchyItem, GTK_EVENT_CONTROLLER(click));
 
+  Text(hierarchyItem, "HierarchyItem", book_id, 0);
   Text(hierarchyItem, "HierarchyItem", book->name, 0);
 
   return hierarchyItem;
@@ -39,7 +43,6 @@ GtkWidget *HierarchyBooksItem(GtkWidget *parent, Book *book){
 GtkWidget *BookSearcher(GtkWidget *parent, char *value) {
     GtkWidget *entry = gtk_entry_new();
     
-    // g_signal_connect(entry, "activate", G_CALLBACK(on_activate), default);
     gtk_widget_set_name(entry, "Searcher");
     gtk_entry_set_placeholder_text(entry, "Szukaj...");
     gtk_widget_set_hexpand(entry, true);

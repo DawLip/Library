@@ -2,6 +2,8 @@
 
 #include <gtk/gtk.h>
 
+GtkWidget *Welcome(GtkWidget *parent);
+
 GtkWidget *Menu(GtkWidget *parent);
 
 GtkWidget *Hierarchy(GtkWidget *parent);

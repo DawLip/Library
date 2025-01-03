@@ -47,6 +47,8 @@ void books_remove(GtkWidget *button, gpointer user_data);
 typedef enum { USERS,BOOKS, DASHBOARD } CurrWindowType;
 
 typedef struct {
+    char projectName[100];
+
     CurrWindowType currWindow;
     struct User *selectedUser;
     struct Book *selectedBook;
@@ -54,7 +56,19 @@ typedef struct {
 
 extern DataUI *dataUI;
 
-void dataUI_init();
+void dataUI_init(char *libraryName);
 void dataUI_set_currWindow(CurrWindowType currWindow);
 void dataUI_set_selectedUser(User *user);
 void dataUI_set_selectedBook(Book *book);
+
+//Projects
+typedef struct {
+	char name[50];
+	char date[50];
+
+	struct Project *next;
+} Project;
+
+extern Project *projects;
+
+struct Project* projects_add(char *name, char *date);

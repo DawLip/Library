@@ -44,7 +44,12 @@ void books_print(){
 }
 
 void books_load_csv(){
-    FILE *file = fopen("./app/books.csv", "r");
+    char src[200]="";
+    strcat(src, "./app/saves/");
+    strcat(src, dataUI->projectName);
+    strcat(src, "/books.csv");
+
+    FILE *file = fopen(src, "r");
     char line[512];
     char *name;
     char *author;

@@ -6,13 +6,13 @@
 
 GtkWidget *menu;
 
-void on_MenuIcon_click(GtkGestureClick *gesture, int n_press, double x, double y, gpointer name) {
+void on_MenuIcon_click(GtkGestureClick *gesture, int n_press, double x, double y, char *name) {
     if(strstr(name, "books")!=NULL) dataUI_set_currWindow(BOOKS);
     else if(strstr(name, "users")!=NULL) dataUI_set_currWindow(USERS);
 
-    Menu_reender();
+    Menu_rerender();
 }
-
+// pointer do name przestaje istnieć //TODO 
 GtkWidget *MenuIcon(GtkWidget *parent, char *name) {
     GtkWidget *menuIcon = Image(parent, "MenuIcon", name);
 
@@ -42,7 +42,7 @@ void Menu_render() {
   else MenuIcon(menu, "books.svg");
 }
 
-void Menu_reender(){
+void Menu_rerender(){
   GtkWidget *child = gtk_widget_get_first_child(menu);
   while (child != NULL) {
         GtkWidget *next = gtk_widget_get_next_sibling(child);

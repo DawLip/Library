@@ -5,12 +5,14 @@
 
 DataUI *dataUI = NULL;
 
-void dataUI_init(){
+void dataUI_init(char *libraryName){
     DataUI *dUI = (DataUI *)malloc(sizeof(DataUI));
+    
     dUI->currWindow = USERS;
     dUI->selectedUser = NULL;
     dUI->selectedBook = NULL;
-    
+    strcpy(dUI->projectName, libraryName);
+
     dataUI = dUI;
 }
 

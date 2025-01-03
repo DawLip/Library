@@ -43,6 +43,7 @@ GtkWidget *UserAddButton(GtkWidget *parent){
   Image(userAddButton, "AddButtonIcon", "add.svg");
   Text(userAddButton, "AddButtonLabel", "Dodaj czytelnika", 0);
 }
+
 int hierarchyUsersItemRenderCondition(User *curr) {
   const char *text = NULL;
   if(hierarchySearcher!=NULL) text = gtk_editable_get_text(hierarchySearcher);
@@ -72,7 +73,6 @@ GtkWidget *HierarchyUsers(GtkWidget *parent){
   GtkWidget *hierarchyUsers = Div(parent, "Hierarchy", "v", "vh", 0);
   
   Text(hierarchyUsers, "Header", "Czytelnicy", 0);
-
   User *curr = users;
   while(curr != NULL) {
     if(hierarchyUsersItemRenderCondition(curr)) HierarchyUsersItem(hierarchyUsers, curr);
