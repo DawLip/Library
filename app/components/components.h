@@ -9,3 +9,5 @@ void Hierarchy_rerender();
 
 GtkWidget *Workspace(GtkWidget *parent);
 void Workspace_rerender();
+
+GtkWidget *TopBar(GtkWidget *parent);

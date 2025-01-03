@@ -68,3 +68,21 @@ void users_load_csv() {
 
     fclose(file);
 }
+
+void users_remove(GtkWidget *button, gpointer user_data) {
+    User *curr = users;
+    User *selectedUser = dataUI->selectedUser;
+
+    if(curr == selectedUser) users=users->next;
+    else {
+        while(curr->next != selectedUser) curr = curr->next;
+
+        User *next = curr->next;
+        curr->next = next->next;
+    }
+
+    dataUI->selectedUser = NULL;
+
+    Hierarchy_rerender();
+    Workspace_rerender();
+}

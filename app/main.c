@@ -8,16 +8,25 @@
 
 #include "./data_types/data_types.h"
 
+GtkWidget *window;
+GtkWidget *root;
+
 void layout(GtkWidget *root){
-  GtkWidget *wrapper;
+  TopBar(root);
 
-  Div(root, "TopBar", "h", "h", 0);
-
-  wrapper = Div(root, "Wrapper", "h", "hv", 0);
+  GtkWidget *wrapper = Div(root, "Wrapper", "h", "hv", 0);
   Menu(wrapper);
   Hierarchy(wrapper);
   Workspace(wrapper);
+}
 
+void window_inicialize(GtkApplication *app) {
+  window = gtk_application_window_new(app);
+  gtk_window_set_title(GTK_WINDOW(window), "Libary");
+  gtk_window_set_default_size(GTK_WINDOW(window), 1920, 1080);
+
+  root = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+  gtk_window_set_child(GTK_WINDOW(window), root);
 }
 
 void css_inicialize(){
@@ -31,13 +40,7 @@ void css_inicialize(){
 }
 
 static void activate(GtkApplication *app) {
-  GtkWidget *window = gtk_application_window_new(app);
-  gtk_window_set_title(GTK_WINDOW(window), "Libary");
-  gtk_window_set_default_size(GTK_WINDOW(window), 1920, 1080);
-
-  GtkWidget *root = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-  gtk_window_set_child(GTK_WINDOW(window), root);
-  
+  window_inicialize(app);
   layout(root);
   css_inicialize();
 
@@ -51,12 +54,11 @@ void data_init() {
 }
 
 int main(int argc, char **argv){
-  GtkApplication *app;
   int status;
 
   data_init();
 
-  app = gtk_application_new("org.gtk.example", G_APPLICATION_DEFAULT_FLAGS);
+  GtkApplication *app = gtk_application_new("org.gtk.example", G_APPLICATION_DEFAULT_FLAGS);
   g_signal_connect(app, "activate", G_CALLBACK(activate), NULL);
   status = g_application_run(G_APPLICATION(app), argc, argv);
   g_object_unref(app);

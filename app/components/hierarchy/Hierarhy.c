@@ -6,7 +6,7 @@
 
 GtkWidget *hierarchyWrapper;
 GtkWidget *hierarchy;
-GtkWidget *parent;
+GtkWidget *hierarchyParent;
 
 void Hierarchy_render(){
   if(dataUI->currWindow == USERS) hierarchy=HierarchyUsers(hierarchyWrapper);
@@ -20,9 +20,9 @@ void Hierarchy_rerender(){
 }
 
 GtkWidget *Hierarchy(GtkWidget *p){
-  if(parent==NULL) parent = p;
+  if(hierarchyParent==NULL) hierarchyParent = p;
 
-  hierarchyWrapper = Div(parent, "HierarchyWrapper", "v", "", 0);
+  hierarchyWrapper = Div(hierarchyParent, "HierarchyWrapper", "v", "", 0);
   Hierarchy_render();
   
   return hierarchyWrapper;

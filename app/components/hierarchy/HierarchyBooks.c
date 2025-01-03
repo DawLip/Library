@@ -10,13 +10,14 @@ void on_BookAddButton_click(GtkGestureClick *gesture, int n_press, double x, dou
 }
 
 GtkWidget *BookAddButton(GtkWidget *parent){
-  GtkWidget *bookAddButton = Div(parent, "BookAddButton", "v", "", 0);
+  GtkWidget *bookAddButton = Div(parent, "BookAddButton", "h", "", 4);
 
   GtkGesture *click = gtk_gesture_click_new();
   g_signal_connect(click, "pressed", G_CALLBACK(on_BookAddButton_click), NULL);
   gtk_widget_add_controller(bookAddButton, GTK_EVENT_CONTROLLER(click));
 
-  Text(bookAddButton, "BookAddButtonLabel", "Add book", 0);
+  Image(bookAddButton, "AddButtonIcon", "add.svg");
+  Text(bookAddButton, "AddButtonLabel", "Dodaj Książkę", 0);
 }
 
 void on_HierarchyBookItem_click(GtkGestureClick *gesture, int n_press, double x, double y, Book *book) {
@@ -35,8 +36,19 @@ GtkWidget *HierarchyBooksItem(GtkWidget *parent, Book *book){
   return hierarchyItem;
 }
 
+GtkWidget *BookSearcher(GtkWidget *parent, char *value) {
+    GtkWidget *entry = gtk_entry_new();
+    
+    // g_signal_connect(entry, "activate", G_CALLBACK(on_activate), default);
+    gtk_widget_set_name(entry, "Searcher");
+    gtk_entry_set_placeholder_text(entry, "Szukaj...");
+    gtk_widget_set_hexpand(entry, true);
+
+    gtk_box_append(GTK_BOX(parent), entry);
+}
+
 GtkWidget *HierarchyBooks(GtkWidget *parent){
-  GtkWidget *hierarchyBooks = Div(parent, "Hierarchy", "v", "", 0);
+  GtkWidget *hierarchyBooks = Div(parent, "Hierarchy", "v", "vh", 0);
 
   Text(hierarchyBooks, "Header", "Books", 0);
 
@@ -47,6 +59,11 @@ GtkWidget *HierarchyBooks(GtkWidget *parent){
   }
 
   BookAddButton(hierarchyBooks);
+  Div(hierarchyBooks, "space", "h", "vh", 0);
+
+  GtkWidget *bookSearch = Div(hierarchyBooks, "Search", "h", "", 8);
+  BookSearcher(bookSearch, "Szukaj...");
+  Image(bookSearch, "SearchIcon", "search.svg");
 
   return hierarchyBooks;
 }

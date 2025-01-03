@@ -4,9 +4,13 @@
 #include "../primitives/primitives.h"
 #include "../data_types/data_types.h"
 
+GtkWidget *menu;
+
 void on_MenuIcon_click(GtkGestureClick *gesture, int n_press, double x, double y, gpointer name) {
-    if(strcmp(name, "books.png")==0)      dataUI_set_currWindow(BOOKS);
-    else if(strcmp(name, "users.svg")==0) dataUI_set_currWindow(USERS);
+    if(strstr(name, "books")!=NULL) dataUI_set_currWindow(BOOKS);
+    else if(strstr(name, "users")!=NULL) dataUI_set_currWindow(USERS);
+
+    Menu_reender();
 }
 
 GtkWidget *MenuIcon(GtkWidget *parent, char *name) {
@@ -20,12 +24,31 @@ GtkWidget *MenuIcon(GtkWidget *parent, char *name) {
 }
 
 GtkWidget *Menu(GtkWidget *parent) {
-  GtkWidget *menu;
   menu = Div(parent, "Menu", "v", "", 16);
 
-  MenuIcon(menu, "home.svg");
-  MenuIcon(menu, "users.svg");
-  MenuIcon(menu, "books.png");
+  Menu_render();
   
   return menu;
+}
+
+void Menu_render() {
+  if(dataUI->currWindow==DASHBOARD) MenuIcon(menu, "home-active.svg");
+  else MenuIcon(menu, "home.svg");
+
+  if(dataUI->currWindow==USERS) MenuIcon(menu, "users-active.svg");
+  else MenuIcon(menu, "users.svg");
+
+  if(dataUI->currWindow==BOOKS) MenuIcon(menu, "books-active.svg");
+  else MenuIcon(menu, "books.svg");
+}
+
+void Menu_reender(){
+  GtkWidget *child = gtk_widget_get_first_child(menu);
+  while (child != NULL) {
+        GtkWidget *next = gtk_widget_get_next_sibling(child);
+        gtk_box_remove(menu, child);
+        child = next;
+    }
+  
+  Menu_render();
 }

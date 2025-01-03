@@ -23,83 +23,75 @@ void on_activate(GtkEntry *entry, char* dest) {
     Hierarchy_rerender();
 }
 
-GtkWidget *Input(GtkWidget *parent, char* value) {
-    GtkWidget *entry = gtk_entry_new();
-    
-    g_signal_connect(entry, "activate", G_CALLBACK(on_activate), value);
-    gtk_editable_set_text(entry, value);
+GtkWidget *ContactItem(GtkWidget *parent, char *icon, char *value, char *placeholder) {
+    GtkWidget *contactItem = Div(parent, "ContactItem", "h", "", 12);
+    Image(contactItem, "ContactItemIcon", icon);
+    Input(contactItem, value, placeholder, on_activate, 16);
 
-    gtk_box_append(GTK_BOX(parent), entry);
+    return ContactItem;
 }
 
-void removeUser(GtkButton *button, gpointer user_data) {
-    User *curr = users;
-    User *selectedUser = dataUI->selectedUser;
+GtkWidget *LabelValue(GtkWidget *parent, char *label, char *value, char *placeholder) {
+    GtkWidget *labelValue = Div(parent, "LabelValue", "h", "", 12);
+    Text(labelValue, "LabelValueLabel", label, 0);
+    Input(labelValue, value, placeholder, on_activate, 16);
 
-    if(curr == selectedUser) users=users->next;
-    else {
-        while(curr->next != selectedUser) curr = curr->next;
-
-        User *next = curr->next;
-        curr->next = next->next;
-    }
-
-    dataUI->selectedUser = NULL;
-
-    Hierarchy_rerender();
-    Workspace_rerender();
-}
-
-void removeBook(GtkButton *button, gpointer user_data) {
-    Book *curr = books;
-    Book *selectedBook = dataUI->selectedBook;
-
-    if(curr == selectedBook) books=books->next;
-    else {
-        while(curr->next != selectedBook) curr = curr->next;
-
-        Book *next = curr->next;
-        curr->next = next->next;
-    }
-
-    dataUI->selectedBook = NULL;
-
-    Hierarchy_rerender();
-    Workspace_rerender();
+    return labelValue;
 }
 
 GtkWidget *WorkspaceUsers(GtkWidget *parent) {
-    GtkWidget *workspaceUsers = Div(parent, "Workspace", "v", "vh", 0);
-    if(dataUI->selectedUser != NULL){
-        User *user = dataUI->selectedUser;
-        Input(workspaceUsers, user->name);
-        Input(workspaceUsers, user->surname);
-        Input(workspaceUsers, user->pesel);
-        Input(workspaceUsers, user->adress);
-        Input(workspaceUsers, user->email);
-        Input(workspaceUsers, user->phone);
-    }
+    GtkWidget *workspaceUsers = Div(parent, "Workspace", "v", "vh", 64);
+    if(dataUI->selectedUser == NULL) return workspaceUsers;
 
-    GtkWidget *button = gtk_button_new_with_label("Remove");
-    g_signal_connect(button, "clicked", G_CALLBACK(removeUser), NULL);
-    gtk_box_append(workspaceUsers, button);
-    
+    User *user = dataUI->selectedUser;
+    char user_id[10];
+    sprintf(user_id, "%d", user->id);
+
+    GtkWidget *hero = Div(workspaceUsers, "Hero", "v", "", 0);
+    GtkWidget *nameSurname = Div(hero, "NameSurname", "h", "", 12);
+    Input(nameSurname, user->name, "Imię", on_activate, 48);
+    Input(nameSurname, user->surname, "Naz", on_activate, 48);
+
+    GtkWidget *idWrapper = Div(hero, "IddWrapper", "h", "", 8);
+    GtkWidget *id1Wrapper = Div(idWrapper, "Id1Wrapper", "h", "", 4);
+    Text(id1Wrapper, "IdLabel", "ID:", 0);
+    Text(id1Wrapper, "Id", user_id, 0);
+    GtkWidget *id2Wrapper = Div(idWrapper, "Id2Wrapper", "h", "", 4);
+    Text(id2Wrapper, "IdLabel", "Pesel:", 0);
+    Input(id2Wrapper, user->pesel, "Pesel", on_activate, 6);
+
+    GtkWidget *contact = Div(workspaceUsers, "Contact", "v", "", 4);
+    Text(contact, "ContactHeader", "Kontakt:", 0);
+    ContactItem(contact, "email.svg", user->email, "Email");
+    ContactItem(contact, "phone.svg", user->phone, "Telefon");
+    ContactItem(contact, "home.svg", user->adress, "Adres");
+
     return workspaceUsers;
 }
 
 GtkWidget *WorkspaceBooks(GtkWidget *parent) {
-    GtkWidget *workspaceBooks = Div(parent, "Workspace", "v", "vh", 0);
-    if(dataUI->selectedBook != NULL){
-        Book *book = dataUI->selectedBook;
-        Input(workspaceBooks, book->name);
-        Input(workspaceBooks, book->author);
-        Input(workspaceBooks, book->isbn);
-        Input(workspaceBooks, book->year);
-    }
+    GtkWidget *workspaceBooks = Div(parent, "Workspace", "v", "vh", 32);
+    if(dataUI->selectedBook == NULL) return workspaceBooks;
 
-    GtkWidget *button = gtk_button_new_with_label("Remove");
-    g_signal_connect(button, "clicked", removeBook, NULL);
-    gtk_box_append(workspaceBooks, button);
+    Book *book = dataUI->selectedBook;
+    char book_id[15];
+    sprintf(book_id, "%d", book->id);
+
+    GtkWidget *hero = Div(workspaceBooks, "Hero", "v", "", 0);
+    GtkWidget *nameSurname = Div(hero, "NameSurname", "h", "", 12);
+    Input(nameSurname, book->name, "Nazwa", on_activate, 48);
+
+    GtkWidget *idWrapper = Div(hero, "IddWrapper", "h", "", 8);
+    GtkWidget *id1Wrapper = Div(idWrapper, "Id1Wrapper", "h", "", 4);
+    Text(id1Wrapper, "IdLabel", "ID:", 0);
+    Text(id1Wrapper, "Id", book_id, 0);
+    GtkWidget *id2Wrapper = Div(idWrapper, "Id2Wrapper", "h", "", 4);
+    Text(id2Wrapper, "IdLabel", "ISBN:", 0);
+    Input(id2Wrapper, book->isbn, "ISBN", on_activate, 6);
+
+    GtkWidget *properties = Div(workspaceBooks, "Properties", "v", "", 4);
+    LabelValue(properties, "Autor:", book->author, "Autor");
+    LabelValue(properties, "Rok wydania:", book->year, "Rok");
     
     return workspaceBooks;
 }

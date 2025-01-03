@@ -1,28 +1,133 @@
 /* DEBUG */
-box {
-    border: 1px solid #d0867025; 
-}
+/* #Workspace box {
+  border: 1px solid #d0867025; 
+} */
 
 /* Code */
+#root {
+	color: rgba(210, 209, 227, 0.90);
+	font-family: Inter;
+	font-size: 16px;
+
+	background: #1C1A30;
+}
+* { outline-width: 0px; }
+
+#input {
+	background-color: rgba(0, 0, 0, 0);
+	border: none;
+	min-width: 0;    
+}
+#input:focus {
+	border: none;     
+	outline: none;      
+	background-color: transparent; 
+}
+/* TopBar ============================= */
 #TopBar {
-    min-height: 48px; 
-}
+  min-height: 48px; 
 
+	border-bottom: 1px solid #403F51;
+	background: #2E2D39;
+}
+#LogoWrapper {
+	min-width: 48px;
+}
+#LogoWrapper #Logo{
+  color: rgba(71, 193, 107, 0.90);
+  font-family: Inter;
+  font-size: 32px;
+  font-weight: 700;
+}
+#ProjectNameAndSave {
+	min-width: 256px;
+	padding: 0px 16px;
+}
+#ProjectName {
+	font-size: 20px;
+	font-weight: 400;
+}
+#SaveProject {
+	min-width: 24px;
+	min-height: 24px;
+}
+#TopBarOptions {
+	padding: 0px 64px;
+	font-weight: 500;
+}
+/* Menu ================================ */
 #Menu {
-    min-width: 48px; 
-    padding-top: 16px;    
-}
-
-#HierarchyWrapper {
-    min-width: 384px; 
-    padding: 16px;
-
-    border: 1px solid #d0707086;
-}
-#HierarchyWrapper #Header {
-    font-size: 24px;
+  min-width: 48px; 
+  padding: 16px 0px;
+	border-right: 1px solid #403F51;
+	background: #1A1920;
 }
 #MenuIcon {
-    min-width: 32px; 
-    min-height: 32px; 
+  min-width: 32px; 
+  min-height: 32px; 
+	/* color: #D2D1E3CC; */
+}
+/* Hierarchy ================================ */
+#HierarchyWrapper {
+  min-width: 256px; 
+  padding: 16px;
+
+  border-right: 1px solid #403F51;
+	background: #2E2D39;
+}
+#Hierarchy #Header {
+	font-size: 24px;
+	font-weight: 400;
+}
+#Hierarchy #AddButtonLabel {
+	color: rgba(71, 193, 107, 0.90);
+	font-weight: 400;
+}
+#Hierarchy #Search {
+	border: 1px solid #403F51;
+	padding-right: 8px;
+}
+#Searcher {
+	background-color: rgba(0, 0, 0, 0);
+	border: none;
+}
+#Searcher:focus {
+	border: none;     
+	outline: none;      
+	background-color: transparent; 
+}
+
+/* Workspace ============================ */
+#Workspace {
+	padding: 64px;
+	background: #1C1A30;
+}
+#Workspace #NameSurname {
+	font-size: 72px;
+	font-weight: 400;
+}
+#Workspace #Id1Wrapper, #Id2Wrapper {
+	padding: 0px 16px;
+	border-radius: 16px;
+	font-size: 12px;
+	background: #686E14;
+}
+#Workspace #Id2Wrapper {
+	background: #146E17;
+}
+#Workspace #Contact {
+	font-size: 24px;
+	font-weight: 400;
+}
+#Workspace #ContactHeader {
+	font-size: 48px;
+	font-weight: 400;
+}
+#Workspace #ContactItemIcon {
+	min-width: 32px;
+	min-height: 32px;
+}
+#Workspace #Properties {
+font-size: 24px;
+font-weight: 400;
 }

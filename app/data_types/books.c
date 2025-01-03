@@ -1,3 +1,4 @@
+#include <gtk/gtk.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -65,4 +66,22 @@ void books_load_csv(){
     }
 
     fclose(file);
+}
+
+void books_remove(GtkWidget *button, gpointer user_data) {
+    Book *curr = books;
+    Book *selectedBook = dataUI->selectedBook;
+
+    if(curr == selectedBook) books=books->next;
+    else {
+        while(curr->next != selectedBook) curr = curr->next;
+
+        Book *next = curr->next;
+        curr->next = next->next;
+    }
+
+    dataUI->selectedBook = NULL;
+
+    Hierarchy_rerender();
+    Workspace_rerender();
 }
