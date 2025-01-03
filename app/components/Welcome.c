@@ -1,4 +1,8 @@
 #include <gtk/gtk.h>
+// #include <time.h>
+// #include <stdio.h>
+// #include <sys/stat.h>
+// #include <sys/types.h>
 
 #include "./components.h"
 #include "../primitives/primitives.h"
@@ -52,6 +56,45 @@ GtkWidget *YourProjectsList(GtkWidget *parent) {
 	}
 }
 
+void on_NewLibraryBtn_click() {
+	time_t now = time(NULL);
+	struct tm *localTime = localtime(&now);
+  char timeStr[80];
+  strftime(timeStr, sizeof(timeStr), "%H:%M:%S %Y.%m.%d", localTime);
+
+	FILE *file = fopen("./app/saves/saves.csv", "a");
+	fprintf(file, "%s,%s\n", "Nowa_biblioteka", timeStr);
+	fclose(file);
+
+	char pathFile[100];
+
+	char path[100] = "./app/saves/";
+	strcat(path, "Nowa_biblioteka");
+	mkdir(path, 0777);
+
+	strcat(pathFile, path);
+	strcat(pathFile, "/users.csv");
+	FILE *usersFile = fopen(pathFile, "w+");
+	fclose(usersFile);
+
+	strcpy(pathFile,"");
+	strcat(pathFile, path);
+	strcat(pathFile, "/books.csv");
+	FILE *booksFile = fopen(pathFile, "w+");
+	fclose(booksFile);
+
+	on_YourProjectsListItem_click(NULL, 0, 0, 0, "Nowa_biblioteka");
+}
+
+GtkWidget *NewLibraryBtn(GtkWidget *parent) {
+	GtkWidget *newLibraryBtn = Div(parent, "NewLibraryBtn", "v", "", 0);
+	Text(newLibraryBtn, "LoadLibraryLabel", "Nowa bibioteka", 0);
+
+	GtkGestureClick *click_gesture = gtk_gesture_click_new();
+	g_signal_connect(click_gesture, "pressed", G_CALLBACK(on_NewLibraryBtn_click), NULL);
+	gtk_widget_add_controller(newLibraryBtn, GTK_EVENT_CONTROLLER(click_gesture));
+}
+
 GtkWidget *Welcome(GtkWidget *parent) {
   GtkWidget *welcome = Div(parent, "Welcome", "h", "v", 32);
 
@@ -63,8 +106,8 @@ GtkWidget *Welcome(GtkWidget *parent) {
 	Div(leftWelcome, "Space", "h", "vh", 0);
 
 	GtkWidget *buttons = Div(leftWelcome, "WelcomeButtons", "h", "", 0);
-	GtkWidget *newLibraryBtn = Div(buttons, "NewLibraryBtn", "v", "", 0);
-	Text(newLibraryBtn, "LoadLibraryLabel", "Nowa bibioteka", 0);
+	NewLibraryBtn(buttons);
+
 	Div(buttons, "Space", "v", "vh", 0);
 	GtkWidget *removeLibraryBtn = Div(buttons, "LoadLibraryBtn", "v", "", 0);
 	Text(removeLibraryBtn, "LoadLibraryLabel", "Wczytaj z pliku", 0);
