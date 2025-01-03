@@ -47,23 +47,43 @@ GtkWidget *BookSearcher(GtkWidget *parent, char *value) {
     gtk_box_append(GTK_BOX(parent), entry);
 }
 
+int hierarchyBooksItemRenderCondition(Book *curr) {
+  const char *text = NULL;
+  if(hierarchySearcher!=NULL) text = gtk_editable_get_text(hierarchySearcher);
+
+  if(text==NULL || strcmp(text, "")==0) return 1;
+
+  char curr_id[15];
+  sprintf(curr_id, "%d", curr->id);
+
+  char str[100];
+  strcpy(str, text);
+  char *token = strtok(str, " ");
+
+  while (token != NULL) {
+    if(
+      strstr(curr_id, token)!=NULL || 
+      strstr(curr->name, token)!=NULL || 
+      strstr(curr->author, token)!=NULL
+    ) return 1;
+    token = strtok(NULL, " "); 
+  }
+
+  return 0;
+}
+
 GtkWidget *HierarchyBooks(GtkWidget *parent){
-  GtkWidget *hierarchyBooks = Div(parent, "Hierarchy", "v", "vh", 0);
+  GtkWidget *hierarchyBooks = Div(parent, "Hierarchy", "v", "vh", 0);  
 
   Text(hierarchyBooks, "Header", "Books", 0);
 
   Book *curr = books;
   while(curr != NULL) {
-    HierarchyBooksItem(hierarchyBooks, curr);
+    if(hierarchyBooksItemRenderCondition(curr)) HierarchyBooksItem(hierarchyBooks, curr);
     curr = curr->next;
   }
 
   BookAddButton(hierarchyBooks);
-  Div(hierarchyBooks, "space", "h", "vh", 0);
-
-  GtkWidget *bookSearch = Div(hierarchyBooks, "Search", "h", "", 8);
-  BookSearcher(bookSearch, "Szukaj...");
-  Image(bookSearch, "SearchIcon", "search.svg");
 
   return hierarchyBooks;
 }

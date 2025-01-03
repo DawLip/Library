@@ -13,7 +13,8 @@
     "typeinfo": "c",
     "stdlib.h": "c",
     "stdio.h": "c",
-    "ratio": "c"
+    "ratio": "c",
+    "initializer_list": "c"
   },
   "C_Cpp.errorSquiggles": "disabled",
   "C_Cpp_Runner.msvcBatchPath": "",

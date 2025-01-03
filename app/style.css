@@ -83,7 +83,7 @@
 	color: rgba(71, 193, 107, 0.90);
 	font-weight: 400;
 }
-#Hierarchy #Search {
+#HierarchyWrapper #Search {
 	border: 1px solid #403F51;
 	padding-right: 8px;
 }

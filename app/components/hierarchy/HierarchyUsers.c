@@ -1,4 +1,5 @@
 #include <gtk/gtk.h>
+#include <string.h>
 
 #include "../components.h"
 #include "../../primitives/primitives.h"
@@ -42,41 +43,43 @@ GtkWidget *UserAddButton(GtkWidget *parent){
   Image(userAddButton, "AddButtonIcon", "add.svg");
   Text(userAddButton, "AddButtonLabel", "Dodaj czytelnika", 0);
 }
+int hierarchyUsersItemRenderCondition(User *curr) {
+  const char *text = NULL;
+  if(hierarchySearcher!=NULL) text = gtk_editable_get_text(hierarchySearcher);
 
-// void on_activate(GtkEntry *entry) {
-    
-    
-//     Hierarchy_rerender();
-// }
+  if(text==NULL || strcmp(text, "")==0) return 1;
 
-GtkWidget *UserSearcher(GtkWidget *parent, char *value) {
-    GtkWidget *entry = gtk_entry_new();
-    
-    // g_signal_connect(entry, "activate", G_CALLBACK(on_activate), default);
-    gtk_widget_set_name(entry, "Searcher");
-    gtk_entry_set_placeholder_text(entry, "Szukaj...");
-    gtk_widget_set_hexpand(entry, true);
+  char curr_id[15];
+  sprintf(curr_id, "%d", curr->id);
 
-    gtk_box_append(GTK_BOX(parent), entry);
+  char str[100];
+  strcpy(str, text);
+  char *token = strtok(str, " ");
+
+  while (token != NULL) {
+    if(
+      strstr(curr_id, token)!=NULL || 
+      strstr(curr->name, token)!=NULL || 
+      strstr(curr->surname, token)!=NULL
+    ) return 1;
+    token = strtok(NULL, " "); 
+  }
+
+  return 0;
 }
 
 GtkWidget *HierarchyUsers(GtkWidget *parent){
-  GtkWidget *hierarchyUsers = Div(parent, "Hierarchy", "v", "v", 0);
-
+  GtkWidget *hierarchyUsers = Div(parent, "Hierarchy", "v", "vh", 0);
+  
   Text(hierarchyUsers, "Header", "Czytelnicy", 0);
 
   User *curr = users;
   while(curr != NULL) {
-    HierarchyUsersItem(hierarchyUsers, curr);
+    if(hierarchyUsersItemRenderCondition(curr)) HierarchyUsersItem(hierarchyUsers, curr);
     curr = curr->next;
   }
 
   UserAddButton(hierarchyUsers);
-  Div(hierarchyUsers, "space", "v", "vh", 0);
-
-  GtkWidget *userSearch = Div(hierarchyUsers, "Search", "h", "", 8);
-  UserSearcher(userSearch, "Szukaj...");
-  Image(userSearch, "SearchIcon", "search.svg");
 
   return hierarchyUsers;
 }
