@@ -3,7 +3,13 @@
 #include "../../data_types/data_types.h"
 
 void on_BookAddButton_click(GtkGestureClick *gesture, int n_press, double x, double y, Book *book) {
-    books_add("name", "author", "isbn", "9999", 1);
+    int id=0;
+    if(books!=NULL){
+      Book *curr=books;
+      while(curr->next!=NULL) curr = curr->next;
+      id=curr->id+1;
+    }
+    books_add(id,"name", "author", "isbn", "9999", 1);
 
     Hierarchy_rerender();
     Workspace_rerender();

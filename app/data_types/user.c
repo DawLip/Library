@@ -7,7 +7,7 @@
 
 User *users;
 
-void users_add(char *name, char *surname, char *pesel, char *adress, char *email, char *phone) {
+void users_add(int id, char *name, char *surname, char *pesel, char *adress, char *email, char *phone) {
     User *curr = users;
     User *new_user;
     new_user =(User *)malloc(sizeof(User));
@@ -28,7 +28,7 @@ void users_add(char *name, char *surname, char *pesel, char *adress, char *email
     }
 
     while(curr->next != NULL) curr = curr->next;
-    new_user->id = curr->id+1;
+    new_user->id = id;
     curr->next = new_user;
 }
 
@@ -50,6 +50,7 @@ void users_load_csv() {
 
     FILE *file = fopen(src, "r");
     char line[256];
+    int id;
     char *name;
     char *surname;
     char *pesel;
@@ -62,13 +63,14 @@ void users_load_csv() {
     while(fgets(line, sizeof(line), file) != NULL) {
         line[strcspn(line, "\n")] = '\0';
 
-        name = strtok(line, ",");
+        id = atoi(strtok(line, ","));
+        name = strtok(NULL, ",");
         surname = strtok(NULL, ",");
         pesel = strtok(NULL, ",");
         adress = strtok(NULL, ",");
         email = strtok(NULL, ",");
         phone = strtok(NULL, ",");
-        users_add(name, surname, pesel, adress, email, phone);
+        users_add(id, name, surname, pesel, adress, email, phone);
     }
 
     fclose(file);

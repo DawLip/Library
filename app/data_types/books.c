@@ -8,7 +8,7 @@
 
 Book *books;
 
-void books_add(char *name, char *author, char *isbn, char *year, int available) {
+void books_add(int id, char *name, char *author, char *isbn, char *year, int available) {
     Book *curr = books;
     Book *new_book;
     new_book =(Book*)malloc(sizeof(Book));
@@ -28,9 +28,8 @@ void books_add(char *name, char *author, char *isbn, char *year, int available) 
     }
 
     while(curr->next != NULL) curr = curr->next;
-    new_book->id = curr->id+1;
+    new_book->id = id;
     curr->next = new_book;
-
 }
 
 void books_print(){
@@ -51,6 +50,7 @@ void books_load_csv(){
 
     FILE *file = fopen(src, "r");
     char line[512];
+    int id;
     char *name;
     char *author;
     char *isbn;
@@ -62,12 +62,13 @@ void books_load_csv(){
     while(fgets(line, sizeof(line), file) != NULL) {
         line[strcspn(line, "\n")] = '\0';
 
-        name = strtok(line, ",");
+        id = atoi(strtok(line, ","));
+        name = strtok(NULL, ",");
         author = strtok(NULL, ",");
         isbn = strtok(NULL, ",");
         year = strtok(NULL, ",");
         available = atoi(strtok(NULL, ","));
-        books_add(name, author, isbn, year, available);
+        books_add(id, name, author, isbn, year, available);
     }
 
     fclose(file);

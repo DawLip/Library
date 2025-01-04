@@ -20,7 +20,7 @@ typedef struct {
 
 extern User *users;
 
-void users_add(char *name, char *surname, char *pesel, char *adress, char *email, char *phone);
+void users_add(int id, char *name, char *surname, char *pesel, char *adress, char *email, char *phone);
 void users_load_csv();
 void users_remove(GtkWidget *button, gpointer user_data);
 
@@ -39,7 +39,7 @@ typedef struct {
 
 extern Book *books;
 
-void books_add(char *name, char *author, char *isbn, char *year, int available);
+void books_add(int id, char *name, char *author, char *isbn, char *year, int available);
 void books_load_csv();
 void books_remove(GtkWidget *button, gpointer user_data);
 
