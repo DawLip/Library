@@ -79,13 +79,16 @@ GtkWidget *HierarchyUsers(GtkWidget *parent){
   GtkWidget *hierarchyUsers = Div(parent, "Hierarchy", "v", "vh", 0);
   
   Text(hierarchyUsers, "Header", "Czytelnicy", 0);
+
+  GtkWidget *itemList = DivS(hierarchyUsers, "ItemList", "v", "vh", 0);
   User *curr = users;
   while(curr != NULL) {
-    if(hierarchyUsersItemRenderCondition(curr)) HierarchyUsersItem(hierarchyUsers, curr);
+    if(hierarchyUsersItemRenderCondition(curr)) HierarchyUsersItem(itemList, curr);
     curr = curr->next;
   }
 
   UserAddButton(hierarchyUsers);
+
 
   return hierarchyUsers;
 }
