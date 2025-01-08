@@ -53,13 +53,19 @@ void SaveIcon(GtkWidget *parent) {
 }
 
 void on_LogoWrapper_click(){
-	GtkWidget *child = gtk_widget_get_first_child(root);
-  while (child != NULL) {
-		GtkWidget *next = gtk_widget_get_next_sibling(child);
-		gtk_box_remove(root, child);
-		child = next;
-  }
-	layoutWelcome(root);
+	// GtkWidget *child = gtk_widget_get_first_child(root);
+  // while (child != NULL) {
+	// 	GtkWidget *next = gtk_widget_get_next_sibling(child);
+	// 	gtk_box_remove(root, child);
+	// 	child = next;
+  // }
+
+	// users=NULL;
+	// books=NULL;
+	// dataUI=NULL;
+	// projects=NULL;
+
+	// layoutWelcome(root);
 }
 
 void Logo(GtkWidget *parent){
