@@ -1,7 +1,7 @@
 /* DEBUG */
-/* box {
+box {
   border: 1px solid #d0867025; 
-} */
+}
 
 /* Code */
 #root {
@@ -162,7 +162,7 @@
 	font-size: 24px;
 	font-weight: 400;
 }
-#Workspace #ContactHeader {
+#Workspace #Header {
 	font-size: 48px;
 	font-weight: 400;
 }

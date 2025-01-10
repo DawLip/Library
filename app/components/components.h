@@ -13,6 +13,9 @@ extern GtkWidget *hierarchySearcher;
 void Hierarchy_rerender();
 
 GtkWidget *Workspace(GtkWidget *parent);
+GtkWidget *WorkspaceUsers(GtkWidget *parent);
+GtkWidget *WorkspaceBooks(GtkWidget *parent);
 void Workspace_rerender();
+void on_Input_change(GtkEntry *entry, char* dest);
 
 GtkWidget *TopBar(GtkWidget *parent);

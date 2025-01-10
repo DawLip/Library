@@ -87,9 +87,9 @@ GtkWidget *HierarchyBooks(GtkWidget *parent){
   Text(hierarchyBooks, "Header", "Books", 0);
 
   GtkWidget *itemList = DivS(hierarchyBooks, "ItemList", "v", "vh", 0);
-  User *curr = users;
+  Book *curr = books;
   while(curr != NULL) {
-    if(hierarchyUsersItemRenderCondition(curr)) HierarchyUsersItem(itemList, curr);
+    if(hierarchyBooksItemRenderCondition(curr)) HierarchyBooksItem(itemList, curr);
     curr = curr->next;
   }
 

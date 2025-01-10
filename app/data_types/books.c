@@ -22,7 +22,7 @@ void books_add(int id, char *name, char *author, char *isbn, char *year, int ava
     new_book->next = NULL;
 
     if(books==NULL) {
-        new_book->id = 0;
+        new_book->id = 1;
         books = new_book;
         return;
     }

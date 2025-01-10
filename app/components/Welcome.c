@@ -83,6 +83,12 @@ void on_NewLibraryBtn_click() {
 	FILE *booksFile = fopen(pathFile, "w+");
 	fclose(booksFile);
 
+	strcpy(pathFile,"");
+	strcat(pathFile, path);
+	strcat(pathFile, "/borrowed_books.csv");
+	FILE *borrowed_booksFile = fopen(pathFile, "w+");
+	fclose(borrowed_booksFile);
+
 	on_YourProjectsListItem_click(NULL, 0, 0, 0, "Nowa_biblioteka");
 }
 

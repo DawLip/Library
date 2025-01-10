@@ -28,10 +28,10 @@ void users_remove(GtkWidget *button, gpointer user_data);
 typedef struct {
     int id;
 
-    char name[50];
+    char name[200];
     char author[50];
-    char isbn[20];
-    char year[7];
+    char isbn[14];
+    char year[5];
     int available;
 
     struct Book *next;
@@ -60,6 +60,23 @@ void dataUI_init(char *libraryName);
 void dataUI_set_currWindow(CurrWindowType currWindow);
 void dataUI_set_selectedUser(User *user);
 void dataUI_set_selectedBook(Book *book);
+
+// Borrowed_books
+typedef struct {
+    int user_id;
+    int book_id;
+    char borrow_date[20];
+    char return_date[20];
+
+    struct Borrowed_books *next;
+} Borrowed_books;
+
+extern Borrowed_books *borrowed_books;
+
+void borrowed_books_add(int user_id,int book_id, char *borrow_date, char *return_date);
+void borrowed_books_print();
+void borrowed_books_csv();
+
 
 //Projects
 typedef struct {
