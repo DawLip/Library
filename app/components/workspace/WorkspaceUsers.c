@@ -37,8 +37,8 @@ void recomendations_render(GtkWidget *parent, User *user) {
 
   char buffer[512];
   FILE *fp;
-  char command[256];
-  snprintf(command, sizeof(command), "python3 python_functions/predict.py %s %d", dataUI->projectName, user->id);
+  char command[512];
+  snprintf(command, sizeof(command), "python3 python_functions/predict.py %s %d %s", dataUI->projectName, user->id);
   fp = popen(command, "r");
   if(fp == NULL) perror("popen");
 
