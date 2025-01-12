@@ -9,8 +9,17 @@ void on_HierarchyUsersItem_click(GtkGestureClick *gesture, int n_press, double x
     dataUI_set_selectedUser(user);
 }
 
+void on_HierarchyUserItem_click(User *user) {
+  dataUI_set_selectedUser(user);
+}
+
 GtkWidget *HierarchyUsersItem(GtkWidget *parent, User *user){
-  GtkWidget *hierarchyItem = Div(parent, "HierarchyItem", "h", "h", 4);
+  User *selected_user = dataUI->selectedUser;
+  GtkWidget *hierarchyItem;
+  if(dataUI->selectedUser!=NULL && selected_user->id==user->id) 
+    hierarchyItem= Div(parent, "HierarchyItemSelected", "h", "h", 4);
+  else 
+    hierarchyItem = Div(parent, "HierarchyItem", "h", "h", 4);
 
   GtkGesture *click = gtk_gesture_click_new();
   g_signal_connect(click, "pressed", G_CALLBACK(on_HierarchyUsersItem_click), user);

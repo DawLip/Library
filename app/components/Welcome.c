@@ -10,6 +10,8 @@
 #include "../data_types/data_types.h"
 #include "../iniclialize.h"
 
+GtkWidget *newLibraryEntry;
+
 void on_YourProjectsListItem_click(GtkGestureClick *gesture, int n_press, double x, double y, char *name) {
 	GtkWidget *child = gtk_widget_get_first_child(root);
   while (child != NULL) {
@@ -56,20 +58,23 @@ GtkWidget *YourProjectsList(GtkWidget *parent) {
 	}
 }
 
-void on_NewLibraryBtn_click() {
+void on_NewLibraryBtn_click(int *_) {
 	time_t now = time(NULL);
 	struct tm *localTime = localtime(&now);
   char timeStr[80];
   strftime(timeStr, sizeof(timeStr), "%H:%M:%S %Y.%m.%d", localTime);
 
+	char *name = gtk_editable_get_text(newLibraryEntry);
+	printf("%s\n", name);
+
 	FILE *file = fopen("./app/saves/saves.csv", "a");
-	fprintf(file, "%s,%s\n", "Nowa_biblioteka", timeStr);
+	fprintf(file, "%s,%s\n", name, timeStr);
 	fclose(file);
 
 	char pathFile[100];
 
 	char path[100] = "./app/saves/";
-	strcat(path, "Nowa_biblioteka");
+	strcat(path, name);
 	mkdir(path, 0777);
 
 	strcat(pathFile, path);
@@ -89,15 +94,15 @@ void on_NewLibraryBtn_click() {
 	FILE *borrowed_booksFile = fopen(pathFile, "w+");
 	fclose(borrowed_booksFile);
 
-	on_YourProjectsListItem_click(NULL, 0, 0, 0, "Nowa_biblioteka");
+	on_YourProjectsListItem_click(NULL, 0, 0, 0, name);
 }
 
 GtkWidget *NewLibraryBtn(GtkWidget *parent) {
-	GtkWidget *newLibraryBtn = Div(parent, "NewLibraryBtn", "v", "", 0);
+	GtkWidget *newLibraryBtn = Div(parent, "NewLibraryBtn", "h", "", 0);
 	Text(newLibraryBtn, "LoadLibraryLabel", "Nowa bibioteka", 0);
 
 	GtkGestureClick *click_gesture = gtk_gesture_click_new();
-	g_signal_connect(click_gesture, "pressed", G_CALLBACK(on_NewLibraryBtn_click), NULL);
+	g_signal_connect(click_gesture, "pressed", on_NewLibraryBtn_click, NULL);
 	gtk_widget_add_controller(newLibraryBtn, GTK_EVENT_CONTROLLER(click_gesture));
 }
 
@@ -112,11 +117,13 @@ GtkWidget *Welcome(GtkWidget *parent) {
 	Div(leftWelcome, "Space", "h", "vh", 0);
 
 	GtkWidget *buttons = Div(leftWelcome, "WelcomeButtons", "h", "", 0);
-	NewLibraryBtn(buttons);
 
-	Div(buttons, "Space", "v", "vh", 0);
-	GtkWidget *removeLibraryBtn = Div(buttons, "LoadLibraryBtn", "v", "", 0);
-	Text(removeLibraryBtn, "LoadLibraryLabel", "Wczytaj z pliku", 0);
+	newLibraryEntry = gtk_entry_new();
+  gtk_entry_set_placeholder_text(newLibraryEntry, "Nazwa biblioteki...");
+  gtk_widget_set_name(newLibraryEntry, "NewLibraryInput");
+  gtk_box_append(buttons, newLibraryEntry);
+
+	NewLibraryBtn(buttons);
 
 	GtkWidget *rightWelcome = Div(welcome, "RightWelcome", "v", "vh", 8);
 	Text(rightWelcome, "YourProjectsLabel", "Twoje projekty", 0);

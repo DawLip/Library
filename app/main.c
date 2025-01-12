@@ -20,7 +20,7 @@ void layoutWorkspace(GtkWidget *root){
   Workspace(wrapper);
 }
 void layoutWelcome(GtkWidget *root){
-  gtk_window_set_default_size(GTK_WINDOW(window), 768, 384);
+  gtk_window_set_default_size(GTK_WINDOW(window), 384*2, 384);
   Welcome(root);
 }
 

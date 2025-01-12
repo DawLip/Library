@@ -41,6 +41,19 @@ void on_SaveIcon_click(GtkWidget *button, gpointer user_data){
 	}
 
 	fclose(booksFile);
+
+	strcpy(pathFile,"");
+	strcat(pathFile, path);
+	strcat(pathFile, "/borrowed_books.csv");
+	FILE *borrowed_books_file = fopen(pathFile, "w");
+
+	Borrowed_books *currBB = borrowed_books;
+	while(currBB!=NULL) {
+		fprintf(borrowed_books_file, "%d,%d,%s,%sd\n", currBB->user_id, currBB->book_id, currBB->borrow_date, currBB->return_date);
+		currBB = currBB->next;
+	}
+
+	fclose(borrowed_books_file);
 }
 
 void SaveIcon(GtkWidget *parent) {
@@ -82,7 +95,7 @@ GtkWidget *TopBar(GtkWidget *parent) {
 	Logo(topBar);
 
 	GtkWidget *projectNameAndSave = Div(topBar, "ProjectNameAndSave", "h","", 0);
-	projectName = Text(projectNameAndSave, "ProjectName", "Moja biblioteka", 0);
+	projectName = Text(projectNameAndSave, "ProjectName", dataUI->projectName, 0);
 	gtk_widget_set_hexpand(projectName, TRUE);
 	
 	SaveIcon(projectNameAndSave);

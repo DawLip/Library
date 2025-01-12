@@ -19,12 +19,14 @@ void dataUI_init(char *libraryName){
 void dataUI_set_selectedUser(User *user){
     dataUI->selectedUser = user;
 
+    Hierarchy_rerender();
     Workspace_rerender();
 }
 
 void dataUI_set_selectedBook(Book *book){
     dataUI->selectedBook = book;
 
+    Hierarchy_rerender();
     Workspace_rerender();
 }
 

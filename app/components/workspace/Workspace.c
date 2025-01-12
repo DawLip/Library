@@ -22,6 +22,7 @@ void on_Input_change(GtkEntry *entry, char* dest) {
 void Workspace_render(){
   if(dataUI->currWindow == USERS) workspace=WorkspaceUsers(workspaceWrapper);
   else if(dataUI->currWindow == BOOKS) workspace=WorkspaceBooks(workspaceWrapper);
+  else if(dataUI->currWindow == DASHBOARD) workspace=WorkspaceDashboard(workspaceWrapper);
 }
 
 void Workspace_rerender(){

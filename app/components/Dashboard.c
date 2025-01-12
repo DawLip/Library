@@ -2,19 +2,11 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
 
-#include "../components.h"
-#include "../../primitives/primitives.h"
-#include "../../data_types/data_types.h"
+#include "./components.h"
+#include "./../primitives/primitives.h"
+#include "./../data_types/data_types.h"
 
-GtkWidget *LabelValue(GtkWidget *parent, char *label, char *value, char *placeholder) {
-  GtkWidget *labelValue = Div(parent, "LabelValue", "h", "", 12);
-  Text(labelValue, "LabelValueLabel", label, 0);
-  Input(labelValue, value, placeholder, on_Input_change, 16);
-
-  return labelValue;
-}
-
-GtkWidget *WorkspaceBooks(GtkWidget *parent) {
+GtkWidget *Dashboard(GtkWidget *parent) {
   GtkWidget *workspaceBooks = Div(parent, "Workspace", "v", "vh", 32);
   if(dataUI->selectedBook == NULL) return workspaceBooks;
 

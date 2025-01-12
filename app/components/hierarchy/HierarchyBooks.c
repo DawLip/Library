@@ -30,8 +30,17 @@ void on_HierarchyBookItem_click(GtkGestureClick *gesture, int n_press, double x,
     dataUI_set_selectedBook(book);
 }
 
+void on_HierarchyBooksItem_click(Book *book) {
+  dataUI_set_selectedBook(book);
+}
+
 GtkWidget *HierarchyBooksItem(GtkWidget *parent, Book *book){
-  GtkWidget *hierarchyItem = Div(parent, "HierarchyItem", "h", "", 4);
+  User *selected_book = dataUI->selectedBook;
+  GtkWidget *hierarchyItem;
+  if(dataUI->selectedBook!=NULL && selected_book->id==book->id) 
+    hierarchyItem= Div(parent, "HierarchyItemSelected", "h", "h", 4);
+  else 
+    hierarchyItem = Div(parent, "HierarchyItem", "h", "h", 4);
 
   char book_id[15];
   sprintf(book_id, "%d", book->id);

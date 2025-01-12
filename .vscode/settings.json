@@ -40,7 +40,10 @@
     "valarray": "c",
     "vector": "c",
     "format": "c",
-    "ranges": "c"
+    "ranges": "c",
+    "numbers": "c",
+    "atomic": "c",
+    "ctime": "c"
   },
   "C_Cpp.errorSquiggles": "disabled",
   "C_Cpp_Runner.msvcBatchPath": "",

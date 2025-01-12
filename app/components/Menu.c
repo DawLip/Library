@@ -9,10 +9,11 @@ GtkWidget *menu;
 void on_MenuIcon_click(GtkGestureClick *gesture, int n_press, double x, double y, char *name) {
     if(strstr(name, "books")!=NULL) dataUI_set_currWindow(BOOKS);
     else if(strstr(name, "users")!=NULL) dataUI_set_currWindow(USERS);
+    else if(strstr(name, "home")!=NULL) dataUI_set_currWindow(DASHBOARD);
 
     Menu_rerender();
 }
-// pointer do name przestaje istnieć //TODO 
+
 GtkWidget *MenuIcon(GtkWidget *parent, char *name) {
     GtkWidget *menuIcon = Image(parent, "MenuIcon", name);
 
