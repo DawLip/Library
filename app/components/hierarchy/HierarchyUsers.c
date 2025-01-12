@@ -9,10 +9,6 @@ void on_HierarchyUsersItem_click(GtkGestureClick *gesture, int n_press, double x
     dataUI_set_selectedUser(user);
 }
 
-void on_HierarchyUserItem_click(User *user) {
-  dataUI_set_selectedUser(user);
-}
-
 GtkWidget *HierarchyUsersItem(GtkWidget *parent, User *user){
   User *selected_user = dataUI->selectedUser;
   GtkWidget *hierarchyItem;

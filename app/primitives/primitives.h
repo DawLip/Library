@@ -1,5 +1,4 @@
 GtkWidget *Div(GtkWidget *parent, char* name, char* orientation, char* expand, int gap);
-// GtkWidget *DivS(GtkWidget *parent, char* name);
 GtkWidget *DivS(GtkWidget *parent, char* name, char* orientation, char* expand, int gap);
 GtkWidget *Image(GtkWidget *parent, char* name, char* src);
 

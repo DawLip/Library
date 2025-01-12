@@ -12,8 +12,6 @@ GtkWidget *hierarchyParent;
 GtkWidget *hierarchySearcher;
 
 static void on_HierarchySearch_changed(GtkEntry *entry, int size) {
-    // const char *text = gtk_editable_get_text(entry);
-    
     Hierarchy_rerender();
 }
 

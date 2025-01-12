@@ -65,29 +65,9 @@ void SaveIcon(GtkWidget *parent) {
 
 }
 
-void on_LogoWrapper_click(){
-	// GtkWidget *child = gtk_widget_get_first_child(root);
-  // while (child != NULL) {
-	// 	GtkWidget *next = gtk_widget_get_next_sibling(child);
-	// 	gtk_box_remove(root, child);
-	// 	child = next;
-  // }
-
-	// users=NULL;
-	// books=NULL;
-	// dataUI=NULL;
-	// projects=NULL;
-
-	// layoutWelcome(root);
-}
-
 void Logo(GtkWidget *parent){
 	GtkWidget *logoWrapper = Div(parent, "LogoWrapper", "v", "", 0);
   Text(logoWrapper, "Logo", "B", 0.5);
-
-	GtkGestureClick *click_gesture = gtk_gesture_click_new();
-	g_signal_connect(click_gesture, "pressed", G_CALLBACK(on_LogoWrapper_click), NULL);
-	gtk_widget_add_controller(logoWrapper, GTK_EVENT_CONTROLLER(click_gesture));
 }
 
 GtkWidget *TopBar(GtkWidget *parent) {

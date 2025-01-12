@@ -1,8 +1,4 @@
 #include <gtk/gtk.h>
-// #include <time.h>
-// #include <stdio.h>
-// #include <sys/stat.h>
-// #include <sys/types.h>
 
 #include "./components.h"
 #include "../primitives/primitives.h"
