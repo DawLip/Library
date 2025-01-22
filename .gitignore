@@ -1,3 +1,5 @@
 /.vscode/
 /build/
-/ML/
+/ML/logs/
+/logs/
+/ML/__pycache__/
