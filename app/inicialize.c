@@ -19,6 +19,7 @@ void data_init(char *libraryName) {
   users_load_csv();
   books_load_csv();
   borrowed_books_csv();
+  models_load_csv();
 }
 
 void css_inicialize(){

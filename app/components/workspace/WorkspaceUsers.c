@@ -9,8 +9,6 @@
 GtkWidget *workspaceUsers;
 GtkWidget *recomendationList;
 
-
-
 GtkWidget *ContactItem(GtkWidget *parent, char *icon, char *value, char *placeholder) {
   GtkWidget *contactItem = Div(parent, "ContactItem", "h", "", 12);
   Image(contactItem, "ContactItemIcon", icon);
@@ -31,17 +29,9 @@ void recomendations_rerender(char *model){
   recomendations_render(recomendationList, model, *user);
 }
 
-static void on_usedModel_changed(GtkComboBox *usedModel, gpointer user_data) {
+static void on_usedModel_changed(GtkComboBox *usedModel, Model *model) {
   const gchar *selected_text = gtk_combo_box_text_get_active_text(usedModel);
-  if(strcmp(selected_text, "brak")==0) {
-    recomendations_rerender("brak");
-  } else if(strcmp(selected_text, "auto")==0) {
-    recomendations_rerender("auto");
-  } else if(strcmp(selected_text, "NeuMF simple")==0) {
-    recomendations_rerender("NeuMF simple");
-  } else if(strcmp(selected_text, "NeuMF advanced")==0) {
-    recomendations_rerender("NeuMF advanced");
-  }
+  recomendations_rerender(selected_text);
 }
 void BorrowingItem(GtkWidget *parent, char *id, char *name, char *borrow_date, char *return_date, char *nname) {
   GtkWidget *borrowingItem = Div(parent, nname, "h", "", 4); 
@@ -56,30 +46,37 @@ void BorrowingItem(GtkWidget *parent, char *id, char *name, char *borrow_date, c
 
 void recomendation(GtkWidget *parent, int id){
   Book *book = books;
-  while(book->id!=id) book = book->next;
+  while(book->id!=id) {
+    if(book->next==NULL) {
+      printf("Book not found\n");
+      return;
+      }
+    book = book->next;
+  }
 
   char b_id[10];
   sprintf(b_id, "%d", book->id);
   BorrowingItem(parent, b_id, book->name,"", "","BorrowingsItem");
 }
 
-void recomendations_render(GtkWidget *parent, char *model, User *user) {
-  if(model == "brak") return Text(parent, "LackOfRecomendation", "Brak rekomendacji", 0);
+void recomendations_render(GtkWidget *parent, char *model_name, User *user) {
+  if(strcmp(model_name, "brak") == 0) return Text(parent, "LackOfRecomendation", "Brak rekomendacji", 0);
 
-  if(strcmp(model, "auto")==0) {
-    Text(parent, "ModelDesctription", "Używa sieci NeuMF advanced dla ilości wypożyceń > 20, MostBorrow w przeciwnym wypadku.", 0);
-  } else if(strcmp(model, "NeuMF simple")==0) {
-    Text(parent, "ModelDesctription", ">>>>> Prosta implementacja sieci NeuMF, nie zaleca się urzywać przy małej ilości wyporzyczeń.", 0);
-  } else if(strcmp(model, "NeuMF advanced")==0) {
-    Text(parent, "ModelDesctription", "Zaawansowana implementacja sieci NeuMF, nie zaleca się urzywać przy małej ilości wyporzyczeń.", 0);
-  } else if(strcmp(model, "MostBorrow")==0) {
-    Text(parent, "ModelDesctription", "Wybiera najpopularniejsze książki.", 0);
+  Model *model = models;
+  while(strcmp(model->name, model_name)!=0) {
+    if(model->next==NULL) {
+      printf("Model not found\n");
+      return;
+      }
+    model = model->next;
   }
+
+  Text(parent, "ModelDesctription", model->decription, 0);
 
   char buffer[512];
   char resultBuffer[512] = ""; 
   char command[512];
-  snprintf(command, sizeof(command), "python3 python_functions/predict.py %s %d", dataUI->projectName, model, user->id);
+  snprintf(command, sizeof(command), "python3 ML/predict.py %s %s %d", dataUI->projectName, model->name, user->id);
 
   FILE *fp;
   fp = popen(command, "r");
@@ -87,6 +84,7 @@ void recomendations_render(GtkWidget *parent, char *model, User *user) {
 
   int capture = 0;
   while (fgets(buffer, sizeof(buffer), fp) != NULL) {
+    printf(buffer);
     if(capture) strncat(resultBuffer, buffer, sizeof(resultBuffer) - strlen(resultBuffer) - 1);
     else if(strncmp(buffer, "RETURN:\n", 8) == 0) capture = 1;
   }
@@ -165,10 +163,12 @@ GtkWidget *WorkspaceUsers(GtkWidget *parent) {
   Text(modelChooser, "ModelLabel", "Model:", 0);
   GtkWidget *usedModelCombobox = gtk_combo_box_text_new();
   gtk_combo_box_text_append(usedModelCombobox, NULL, "brak");
-  gtk_combo_box_text_append(usedModelCombobox, NULL, "auto");
-  gtk_combo_box_text_append(usedModelCombobox, NULL, "NeuMF simple");
-  gtk_combo_box_text_append(usedModelCombobox, NULL, "NeuMF advanced");
-  gtk_combo_box_text_append(usedModelCombobox, NULL, "MostBorrows");
+
+  Model *currm = models;
+  while(currm != NULL) {
+    gtk_combo_box_text_append(usedModelCombobox, NULL, currm->name);
+    currm = currm->next;
+  }
   gtk_combo_box_set_active(usedModelCombobox, 0);
   gtk_widget_set_name(usedModelCombobox, "ModelChooser");
   g_signal_connect(usedModelCombobox, "changed", G_CALLBACK(on_usedModel_changed), NULL);

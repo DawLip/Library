@@ -1,5 +1,5 @@
 /* DEBUG */
-/* box {
+/* box, image {
   border: 1px solid #d0867025; 
 } */
 
@@ -211,3 +211,23 @@ font-weight: 400;
 	font-size: 24px;
 	font-weight: 700;
 }
+/* Models */
+#Metrics {
+	/* min-height: 720px; */
+	padding: 0px;
+	margin: 0px;
+	font-size: 24px;
+	font-weight: 700;
+}
+
+#TrainButton{
+	color:  rgba(71, 193, 107, 0.90);
+	font-size: 16px;
+	font-weight: 700;
+}
+#Img{
+	padding: 0px;
+	margin: 0px;
+	min-height: 1000px;
+	min-width: 1200px;
+} 

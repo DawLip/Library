@@ -1,6 +1,7 @@
 import datetime
 import os
 import json
+import sys
 
 import tensorflow as tf
 
@@ -8,13 +9,17 @@ import tensorflow as tf
 import tensorflow.keras as keras
 
 from utils import *
+from dataset_utils import *
 from model_architectures.NeuMF import *
 
 def train_model(project_name, model_name, train_dataset_name, path_to_project):
   os.makedirs(f"./{path_to_project}/{project_name}/{model_name}", exist_ok=True)
 
+  parse_dataset(f"app/saves/{project_name}")
+  
   train_data, test_data, users_all, items_all = load_dataset(dataset_path=f"./app/saves/{project_name}/datasets")
   train_dataset = to_dataset(train_data, batch_size=2048)
+  
 
   with open(f"./ML/model_architectures/{model_name}_hiper_params.json", "r") as json_file:
     hiper_params = json_file.read()
@@ -45,7 +50,7 @@ def train_model(project_name, model_name, train_dataset_name, path_to_project):
 
   train_hist = model.fit(
     train_dataset,
-    epochs=100,
+    epochs=10,
     callbacks=[tf.keras.callbacks.TensorBoard(logdir, histogram_freq=1), earlyStoppingAtNDGC],
     verbose=1
   ) 
@@ -56,4 +61,8 @@ def train_model(project_name, model_name, train_dataset_name, path_to_project):
   make_metrics_vs_k_graphs(test_data, save=True, path_to_save=path_to_save)
   model.save(f"{path_to_save}/{model_name}.keras")
   
-train_model("MovieLens_s_dataset_50", "NeuMF", "MovieLens_s_dataset_50", "./app/saves")
+if __name__ == "__main__":  
+  project_name = sys.argv[1]
+  model_name = sys.argv[2]
+  
+  train_model(project_name, model_name, project_name, "./app/saves")

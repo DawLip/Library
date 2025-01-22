@@ -80,7 +80,7 @@ def create_items_ids_file(interactions, target, folder=""):
     
     return items
 
-def translate_item_id(interactions, item_id_translation, id_from, id_to, target, folder=""):
+def translate_item_id(interactions, item_id_translation, id_from, id_to, target="", folder="", save=True):
     interactions_translated = interactions.merge(
         item_id_translation,
         left_on=id_from,
@@ -93,7 +93,7 @@ def translate_item_id(interactions, item_id_translation, id_from, id_to, target,
     interactions_translated = interactions_translated.drop(columns=["item_id"])
     interactions_translated = interactions_translated.rename(columns={"new_item_id": "item_id"})
     
-    interactions_translated.to_csv(f"./{target}{folder}/interaction_data.csv", index=False)
+    if save: interactions_translated.to_csv(f"./{target}{folder}/interaction_data.csv", index=False)
     
     return interactions_translated
   
@@ -124,3 +124,16 @@ def translate_user_ids(interactions, item_id_translation, id_from, id_to, target
     interactions_translated.to_csv(f"./{target}{folder}/interaction_data.csv", index=False)
     
     return interactions_translated
+  
+def parse_dataset(target):
+  interactions = create_interactions_file(dataset=target, file_name="borrowed_books.csv", folder="/datasets")
+  item_id_translation = create_items_ids_file(interactions, target=target, folder="/datasets")
+  interactions = translate_item_id(interactions, item_id_translation, "item_id", "new_item_id", target=target, folder="/datasets")
+  print(interactions)
+  user_id_translation = create_user_ids_file(interactions, target=target)
+  interactions = translate_user_ids(interactions, user_id_translation, "user_id", "new_user_id", target=target, folder="/datasets")
+
+  negative = create_neg_file(interactions, target, folder="/datasets")
+  create_train_test_files(interactions, negative, target=target, train_negatives_num=10, test_negatives_num=100, folder="/datasets")
+  
+parse_dataset("app/saves/MovieLens_s_dataset_50")

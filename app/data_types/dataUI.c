@@ -11,6 +11,7 @@ void dataUI_init(char *libraryName){
     dUI->currWindow = USERS;
     dUI->selectedUser = NULL;
     dUI->selectedBook = NULL;
+    dUI->selectedModel = NULL;
     strcpy(dUI->projectName, libraryName);
 
     dataUI = dUI;
@@ -18,6 +19,13 @@ void dataUI_init(char *libraryName){
 
 void dataUI_set_selectedUser(User *user){
     dataUI->selectedUser = user;
+
+    Hierarchy_rerender();
+    Workspace_rerender();
+}
+
+void dataUI_set_selectedModel(Model *model){
+    dataUI->selectedModel = model;
 
     Hierarchy_rerender();
     Workspace_rerender();

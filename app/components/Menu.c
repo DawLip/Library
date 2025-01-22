@@ -10,6 +10,7 @@ void on_MenuIcon_click(GtkGestureClick *gesture, int n_press, double x, double y
     if(strstr(name, "books")!=NULL) dataUI_set_currWindow(BOOKS);
     else if(strstr(name, "users")!=NULL) dataUI_set_currWindow(USERS);
     else if(strstr(name, "home")!=NULL) dataUI_set_currWindow(DASHBOARD);
+    else if(strstr(name, "models")!=NULL) dataUI_set_currWindow(MODELS);
 
     Menu_rerender();
 }
@@ -41,6 +42,9 @@ void Menu_render() {
 
   if(dataUI->currWindow==BOOKS) MenuIcon(menu, "books-active.svg");
   else MenuIcon(menu, "books.svg");
+
+  if(dataUI->currWindow==MODELS) MenuIcon(menu, "models-active.svg");
+  else MenuIcon(menu, "models.svg");
 }
 
 void Menu_rerender(){

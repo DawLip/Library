@@ -23,6 +23,7 @@ void Workspace_render(){
   if(dataUI->currWindow == USERS) workspace=WorkspaceUsers(workspaceWrapper);
   else if(dataUI->currWindow == BOOKS) workspace=WorkspaceBooks(workspaceWrapper);
   else if(dataUI->currWindow == DASHBOARD) workspace=WorkspaceDashboard(workspaceWrapper);
+  else if(dataUI->currWindow == MODELS) workspace=WorkspaceModels(workspaceWrapper);
 }
 
 void Workspace_rerender(){

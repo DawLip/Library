@@ -1,0 +1,1 @@
+{"latent_dim_mf": 18, "latent_dim_mlp": 116, "embeding_l2_mf": 0.03023100113314985, "embeding_l2_mlp": 0.07623969753407031, "mlp_layers_num": 8, "mlp_layers_neurons": 4, "mlp_l2": 0.028303256057109608, "mlp2_layers_num": 3, "mlp2_layers_neurons": 25, "n_users": 610, "n_items": 9724}

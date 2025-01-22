@@ -31,6 +31,7 @@ void Hierarchy_render(){
   if(dataUI->currWindow == USERS) hierarchy=HierarchyUsers(hierarchyContainer);
   else if(dataUI->currWindow == BOOKS) hierarchy=HierarchyBooks(hierarchyContainer);
   else if(dataUI->currWindow == DASHBOARD) hierarchy=HierarchyDashboard(hierarchyContainer);
+  else if(dataUI->currWindow == MODELS) hierarchy=HierarchyModels(hierarchyContainer);
 }
 
 void Hierarchy_rerender(){
