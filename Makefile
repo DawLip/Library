@@ -22,7 +22,7 @@ cls:
 	rm -rf $(BUILDDIR) $(TARGET)
 
 setup:
-	source .venv/bin/activate
+	conda activate ML39
 
 run: $(TARGET)
 	./$(TARGET)

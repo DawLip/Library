@@ -9,6 +9,25 @@ import tensorflow as tf
 import seaborn as sns
 
 def create_interactions_file(dataset="ml-latest-small", target=False, file_name="ratings.csv", folder=""):
+  """
+  Creates interaction data file from given dataset.
+
+  Parameters
+  ----------
+  dataset : str
+    Name of the dataset, e.g. ml-latest-small
+  target : str
+    Name of the target folder, if not specified, the same as dataset
+  file_name : str
+    Name of the file containing the data, e.g. ratings.csv
+  folder : str
+    Additional folder to create, e.g. /datasets
+
+  Returns
+  -------
+  interactions : pandas.DataFrame
+    DataFrame containing user-item interactions
+  """
   if not target: target = dataset
   os.makedirs(f"./{target}{folder}", exist_ok=True)
   
@@ -18,6 +37,28 @@ def create_interactions_file(dataset="ml-latest-small", target=False, file_name=
   return interactions
 
 def create_neg_file(interactions, target, folder=""):
+  """
+  Generates a CSV file containing negative samples for each user.
+
+  Parameters
+  ----------
+  interactions : pandas.DataFrame
+      DataFrame containing user-item interactions with columns ['user_id', 'item_id'].
+  target : str
+      The directory where the negative samples file will be saved.
+  folder : str, optional
+      Additional subfolder path within the target directory, by default "".
+
+  Returns
+  -------
+  pandas.DataFrame
+      DataFrame containing negative samples with columns ['user_id', 'item_ids'].
+
+  The function creates a CSV file named 'negative_samples.csv' in the specified
+  target directory. For each user, it identifies items they have not interacted with
+  and stores these as potential negative samples.
+  """
+
   os.makedirs(f"./{target}{folder}", exist_ok=True)
   
   users = interactions['user_id'].unique()
@@ -49,6 +90,33 @@ def generate_negative_samples(user_id, negative, num_negatives=3):
     return negative_samples
   
 def create_train_test_files(interactions, negative, target, seed=43, train_negatives_num=1, test_negatives_num=100, folder=""):
+  """
+  Creates train and test files for a given dataset.
+
+  Parameters
+  ----------
+  interactions : pandas.DataFrame
+    DataFrame containing user-item interactions with columns ['user_id', 'item_id', 'interaction'].
+  negative : pandas.DataFrame
+    DataFrame containing negative samples for each user with columns ['user_id', 'item_ids'].
+  target : str
+    The directory where the train and test files will be saved.
+  seed : int, optional
+    The seed for the random sampling, by default 43.
+  train_negatives_num : int, optional
+    The number of negative samples to add to the training data for each user, by default 1.
+  test_negatives_num : int, optional
+    The number of negative samples to add to the test data for each user, by default 100.
+  folder : str, optional
+    Additional subfolder path within the target directory, by default "".
+
+  Returns
+  -------
+  train : pandas.DataFrame
+    DataFrame containing the training data with columns ['user_id', 'item_id', 'interaction'].
+  test : pandas.DataFrame
+    DataFrame containing the test data with columns ['user_id', 'item_id', 'interaction'].
+  """
   os.makedirs(f"./{target}{folder}", exist_ok=True)
   
   unique_users = interactions['user_id'].unique()
@@ -70,6 +138,23 @@ def create_train_test_files(interactions, negative, target, seed=43, train_negat
   return train, test
 
 def create_items_ids_file(interactions, target, folder=""):
+    """
+    Creates a CSV file containing a translation of item IDs to new item IDs.
+    
+    Parameters
+    ----------
+    interactions : pandas.DataFrame
+        DataFrame containing user-item interactions with columns ['user_id', 'item_id', 'interaction'].
+    target : str
+        The directory where the item ID translation file will be saved.
+    folder : str, optional
+        Additional subfolder path within the target directory, by default "".
+    
+    Returns
+    -------
+    pandas.DataFrame
+        DataFrame containing the item ID translation with columns ['item_id', 'new_item_id'].
+    """
     os.makedirs(f"./{target}{folder}", exist_ok=True)
     
     unique_items = interactions["item_id"].unique()
@@ -81,6 +166,31 @@ def create_items_ids_file(interactions, target, folder=""):
     return items
 
 def translate_item_id(interactions, item_id_translation, id_from, id_to, target="", folder="", save=True):
+    """
+    Translates the item IDs in the given interactions DataFrame using the given translation table.
+    
+    Parameters
+    ----------
+    interactions : pandas.DataFrame
+        DataFrame containing user-item interactions with columns ['user_id', 'item_id', 'interaction'].
+    item_id_translation : pandas.DataFrame
+        DataFrame containing the item ID translation with columns ['item_id', 'new_item_id'].
+    id_from : str
+        The name of the column in interactions to translate from.
+    id_to : str
+        The name of the column in item_id_translation to translate to.
+    target : str, optional
+        The directory where the translated interactions will be saved, by default "".
+    folder : str, optional
+        Additional subfolder path within the target directory, by default "".
+    save : bool, optional
+        Whether to save the translated interactions to a file, by default True.
+    
+    Returns
+    -------
+    pandas.DataFrame
+        DataFrame containing the translated interactions with columns ['user_id', 'item_id', 'interaction'].
+    """
     interactions_translated = interactions.merge(
         item_id_translation,
         left_on=id_from,
@@ -98,6 +208,23 @@ def translate_item_id(interactions, item_id_translation, id_from, id_to, target=
     return interactions_translated
   
 def create_user_ids_file(interactions, target, folder=""):
+    """
+    Creates a CSV file containing a translation of user IDs to new user IDs.
+
+    Parameters
+    ----------
+    interactions : pandas.DataFrame
+        DataFrame containing user-item interactions with columns ['user_id', 'item_id', 'interaction'].
+    target : str
+        The directory where the user ID translation file will be saved.
+    folder : str, optional
+        Additional subfolder path within the target directory, by default "".
+
+    Returns
+    -------
+    pandas.DataFrame
+        DataFrame containing the user ID translation with columns ['user_id', 'new_user_id'].
+    """
     os.makedirs(f"./{target}{folder}", exist_ok=True)
     
     unique_items = interactions["user_id"].unique()
@@ -109,23 +236,59 @@ def create_user_ids_file(interactions, target, folder=""):
     return items
 
 def translate_user_ids(interactions, item_id_translation, id_from, id_to, target, folder=""):
-    interactions_translated = interactions.merge(
-        item_id_translation,
-        left_on=id_from,
-        right_on="user_id",
-        how="left"
-    )
-    
-    interactions_translated[id_from] = interactions_translated[id_to]
-    
-    interactions_translated = interactions_translated.drop(columns=["user_id"])
-    interactions_translated = interactions_translated.rename(columns={"new_user_id": "user_id"})
-    
-    interactions_translated.to_csv(f"./{target}{folder}/interaction_data.csv", index=False)
-    
-    return interactions_translated
+  """
+  Translates the user IDs in the given interactions DataFrame using the given translation table.
+
+  Parameters
+  ----------
+  interactions : pandas.DataFrame
+      DataFrame containing user-item interactions with columns ['user_id', 'item_id', 'interaction'].
+  item_id_translation : pandas.DataFrame
+      DataFrame containing the user ID translation with columns ['user_id', 'new_user_id'].
+  id_from : str
+      The name of the column in interactions to translate from.
+  id_to : str
+      The name of the column in item_id_translation to translate to.
+  target : str
+      The directory where the translated interactions will be saved.
+  folder : str, optional
+      Additional subfolder path within the target directory, by default "".
+
+  Returns
+  -------
+  pandas.DataFrame
+      DataFrame containing the translated interactions with columns ['user_id', 'item_id', 'interaction'].
+  """
+
+  interactions_translated = interactions.merge(
+    item_id_translation,
+    left_on=id_from,
+    right_on="user_id",
+    how="left"
+  )
+  
+  interactions_translated[id_from] = interactions_translated[id_to]
+  
+  interactions_translated = interactions_translated.drop(columns=["user_id"])
+  interactions_translated = interactions_translated.rename(columns={"new_user_id": "user_id"})
+  
+  interactions_translated.to_csv(f"./{target}{folder}/interaction_data.csv", index=False)
+  
+  return interactions_translated
   
 def parse_dataset(target):
+  """
+  Creates interaction data, item ID translation, user ID translation, negative samples and train/test files for a given dataset.
+
+  Parameters
+  ----------
+  target : str
+      The name of the dataset, e.g. ml-latest-small
+
+  Returns
+  -------
+  None
+  """
   interactions = create_interactions_file(dataset=target, file_name="borrowed_books.csv", folder="/datasets")
   item_id_translation = create_items_ids_file(interactions, target=target, folder="/datasets")
   interactions = translate_item_id(interactions, item_id_translation, "item_id", "new_item_id", target=target, folder="/datasets")
@@ -136,4 +299,4 @@ def parse_dataset(target):
   negative = create_neg_file(interactions, target, folder="/datasets")
   create_train_test_files(interactions, negative, target=target, train_negatives_num=10, test_negatives_num=100, folder="/datasets")
   
-parse_dataset("app/saves/MovieLens_s_dataset_50")
+# parse_dataset("app/saves/MovieLens_s_dataset_50")

@@ -24,10 +24,35 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.regularizers import l2
 
 def make_metrics_vs_epochs_graphs(train_hist, callback_hist, save=False, path_to_save=""):
+  """
+  Function to generate a graph of metrics vs. epochs from a given Keras `History` object.
+  
+  Parameters:
+  train_hist (History): The `History` object from a fit operation.
+  callback_hist (History): A `History` object from a callback.
+  save (bool): Whether to save the graph or display it.
+  path_to_save (str): Path to save the graph to.
+  
+  Returns:
+  None
+  """
   metrics=["auc", "precision", "recall"]
   plt.figure(figsize=(len(metrics)*6, 10))
   
   def plot(name, x, s1, s2, s3):
+    """
+    Plot a given metric vs. epochs.
+
+    Parameters:
+    name (str): Name of the metric to plot.
+    x (list): The values of the metric to plot.
+    s1 (int): The number of rows in the subplot layout.
+    s2 (int): The number of columns in the subplot layout.
+    s3 (int): The index of the subplot in the layout.
+
+    Returns:
+    None
+    """
     plt.subplot(s1, s2, s3)
     plt.plot(x, label=f'Training {name}', marker='o')
     plt.title(f"{name} vs. Epochs")
@@ -47,6 +72,18 @@ def make_metrics_vs_epochs_graphs(train_hist, callback_hist, save=False, path_to
   else: plt.savefig(f"{path_to_save}/metrics_vs_epochs.png")
   
 def calculate_hr_at_k(test_data, k=10, target_col="interaction", recs_col="predictions"):
+  """
+  Calculate Hit Rate at K metric for a given dataset.
+
+  Parameters:
+  test_data (pandas.DataFrame): The test data to calculate the metric for.
+  k (int): The number of items to consider for calculating the metric.
+  target_col (str): The column name of the target variable.
+  recs_col (str): The column name of the recommendations.
+
+  Returns:
+  float: The calculated Hit Rate at K metric.
+  """
   test_data = test_data.sort_values(["user_id", "predictions"], ascending=[True, False])
   top_k_items = test_data.groupby("user_id").head(k)
   hr_at_k = top_k_items.groupby("user_id")["interaction"].max().mean()
@@ -96,6 +133,17 @@ class EarlyStoppingAtNDGC(tf.keras.callbacks.Callback):
       self.model.stop_training = True
       
 def make_metrics_vs_k_graphs(data, save=False, path_to_save=""):
+  """
+  Plot two subplots with NDGC@K and HR@K metrics for a given dataset.
+
+  Parameters:
+  data (pandas.DataFrame): The dataset to calculate the metrics for.
+  save (bool): Whether to save the plot to a file. If True, path_to_save must be specified.
+  path_to_save (str): The path to save the plot to. If not specified, the plot will be shown in a window.
+
+  Returns:
+  None
+  """
   def at_k(K=10):
     ndcg=[]
     hr=[]
@@ -125,6 +173,25 @@ def make_metrics_vs_k_graphs(data, save=False, path_to_save=""):
   else: plt.savefig(f"{path_to_save}/metrics_vs_k.png")
   
 def load_dataset(dataset_path = "./datasets/ml-latest-small"):
+  """
+  Loads a dataset from given path.
+
+  Parameters
+  ----------
+  dataset_path : str
+      The path to the dataset.
+
+  Returns
+  -------
+  train_data : pandas.DataFrame
+      The training data.
+  test_data : pandas.DataFrame
+      The test data.
+  users_all : numpy.ndarray
+      All user IDs.
+  items_all : numpy.ndarray
+      All item IDs.
+  """
   interactions_path = f"{dataset_path}/interaction_data.csv"
   negative_samples_path = f"{dataset_path}/negative_samples.csv"
   train_data_path = f"{dataset_path}/train_data_1-10.csv"
@@ -142,6 +209,24 @@ def load_dataset(dataset_path = "./datasets/ml-latest-small"):
   return train_data, test_data, users_all, items_all
   
 def to_dataset(data, batch_size=2048*8, test=False):
+  """
+  Converts a pandas DataFrame into a TensorFlow dataset.
+
+  Parameters
+  ----------
+  data : pandas.DataFrame
+      The data to be converted, containing columns 'user_id', 'item_id', and optionally 'interaction'.
+  batch_size : int, optional
+      The size of the batches in the resulting dataset, by default 2048*8.
+  test : bool, optional
+      Flag indicating whether the dataset is for testing. If True, 'interaction' column is not included, by default False.
+
+  Returns
+  -------
+  tf.data.Dataset
+      A TensorFlow dataset with user and item IDs, and optionally interactions if not in test mode.
+  """
+
   user_ids = tf.convert_to_tensor(data["user_id"].values, dtype=tf.int64)
   item_ids = tf.convert_to_tensor(data["item_id"].values, dtype=tf.int64)
   
