@@ -77,6 +77,8 @@ void users_load_csv() {
 }
 
 void users_remove(GtkWidget *button, gpointer user_data) {
+
+    borrowed_books_print();
     User *curr = users;
     User *selectedUser = dataUI->selectedUser;
 
@@ -88,7 +90,19 @@ void users_remove(GtkWidget *button, gpointer user_data) {
         curr->next = next->next;
     }
 
+    Borrowed_books *borrowed_book = borrowed_books;
+    Borrowed_books *prev = borrowed_books;
+    while(borrowed_book->next != NULL) {
+        if(borrowed_book->user_id == selectedUser->id) {
+            prev->next = borrowed_book->next;
+        }
+        prev = borrowed_book;
+        borrowed_book = borrowed_book->next;
+    }
+
     dataUI->selectedUser = NULL;
+
+    borrowed_books_print();
 
     Hierarchy_rerender();
     Workspace_rerender();

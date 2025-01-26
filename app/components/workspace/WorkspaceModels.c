@@ -39,6 +39,10 @@ void on_TrainButton_click(GtkGestureClick *gesture, int n_press, double x, doubl
   FILE *fp;
   fp = popen(command, "r");
   if(fp == NULL) perror("popen");
+
+  while (fgets(buffer, sizeof(buffer), fp) != NULL) {
+    printf(buffer);
+  }
   close(fp);
 
   printf("Traning finished\n");

@@ -11,6 +11,8 @@ import tensorflow.keras as keras
 from utils import *
 from dataset_utils import *
 from model_architectures.NeuMF import *
+from model_architectures.NeuMF_advanced import *
+from model_architectures.MF import *
 
 def train_model(project_name, model_name, train_dataset_name, path_to_project):
   os.makedirs(f"./{path_to_project}/{project_name}/{model_name}", exist_ok=True)
@@ -28,7 +30,10 @@ def train_model(project_name, model_name, train_dataset_name, path_to_project):
 
   hiper_params["n_users"] = len(users_all)
   hiper_params["n_items"] = len(items_all)
-  model = create_model_NeuMF(hiper_params)
+  
+  if model_name == "NeuMF": model = create_model_NeuMF(hiper_params)
+  elif model_name == "MF": model = create_model_MF(hiper_params)
+  else: model = create_model_NeuMF_advanced(hiper_params)
 
   model.compile(
     optimizer="adam",
@@ -46,11 +51,11 @@ def train_model(project_name, model_name, train_dataset_name, path_to_project):
   )
 
   logdir = os.path.join("logs", datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
-  earlyStoppingAtNDGC = EarlyStoppingAtNDGC(patience=60, test_data=test_data)
+  earlyStoppingAtNDGC = EarlyStoppingAtNDGC(patience=20, test_data=test_data)
 
   train_hist = model.fit(
     train_dataset,
-    epochs=10,
+    epochs=50,
     callbacks=[tf.keras.callbacks.TensorBoard(logdir, histogram_freq=1), earlyStoppingAtNDGC],
     verbose=1
   ) 

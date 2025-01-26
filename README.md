@@ -107,7 +107,9 @@ Domyślnie w aplikacji dostępne są 3 projekty:
 
 W MovieLens domyślnie podane były rankingi filmów, zostało to zmienione na interakcje (jeżeli film był oceniony to `interaction`=1)
 # Wytrenowane modele
-## Metoda ewaluacji "*leave-one-out*"
+## Sposób ewaluacji
+Ewaluacja modeli została przeprowadzona metodą *leave-one-out* oraz dodatkowo została zwrócona uwaga na wartości `precision` oraz `racall` w trakcie treningu
+### Metoda ewaluacji "*leave-one-out*"
 *Leave-one-out* jest standardem w ewaluacji systemów rekomendacji, polega na stworzenie datasetu testowego poprzez (dla każdego użytkownika):
 - usunięcie ostatniej interakcji z datasetu treningowego i przerzucenie do datasetu testowego
 - dodanie do datasetu testowego 100 itemów, z którymi nie zaistniała interakcja
@@ -117,13 +119,26 @@ Najpopularniejszymi metrykami w tej metodzie są:
 - `NDGC@K` (Normalized Discounted Cumulative Gain at K) - wskazuje jak wysoko w K najprawdopodobniejszych predykcjach znajduje się prawdziwa interakcja (1 dla prawdziwej interakcji zawsze na pierwszym miejscu)
 
 ## Model MF
-**Wyniki wytrenowanego modelu**
+Prosta implementacja sieci Neural Collaborative Filtering Framework przedstawionej w pracy [Neural Collaborative Filtering](https://arxiv.org/pdf/1708.05031) z 2017 roku. Zamiast MLP została zastosowana jedynie warstwa predykcji.  
+**Model zaproponowany przez autorów badania:**
+![alt text](ML/images/NCFF.png)  
+**Mój zaimplementowany model**  
+![alt text](ML/images/MF_architecture.png)  
+**Przebieg szkolenia**
+![alt text](ML/images/ML_E_vs_M.png)
+- `precision` - znacznie maleje z czasem, w kolejnych modelach udało się uzyskać utrzymywanie się statystyki z ilością epok
+- `recall` - stale rośnie z czasem, początkowo razem z NDGC, od pownej epoki  NDGC zostaje w miejscu 
+
+**Wyniki modelu w zależności od K**
+![alt text](ML/images/ML_M_vs_K.png)
+
 |  | Mój MF | Orginalne NeuMF       | Orginalne NeuMF z pretreningiem       |
 |-----------------|----------------|----------------|----------------|
-| HR@10 | 0.820 | 0.705 | 0.730 |
-| NDGC@10 | 0.597 | 0.426 | 0.447 |
+| HR@10 | 0.752 | 0.705 | 0.730 |
+| NDGC@10 | 0.521 | 0.426 | 0.447 |
 
 \* Oryginalne modele były trenowane na pełnym datasecie, przy stałej ilości `latent_dim` równej 64 (najleprze zaraportowane wyniki przez autorów)
+
 
 ## Model NeuMF
 Podstawę do budowania modelu stanowi praca [Neural Collaborative Filtering](https://arxiv.org/pdf/1708.05031) z 2017 roku, która przedstawia sposób przeprowadzenia faktoryzacji macierzy z udziałem sieci neuronowej (NeuMF - Neural matrix factorization).
@@ -131,19 +146,60 @@ Podstawę do budowania modelu stanowi praca [Neural Collaborative Filtering](htt
 **Autorzy proponują poniższy model:**  
 ![NeuMF.png](ML/images/NeuMF.png)
 
-**Wyniki wytrenowanego modelu**
+**Mój zaimplementowany model**  
+![alt text](ML/images/NeuMF_architecture.png)  
+
+**Przebieg szkolenia**
+![alt text](ML/images/NeuMF_E_vs_M.png)
+- `precision` - z czasem utrzymuje się na relatywnie stałym poziomie
+- `recall` - stale rośnie z czasem, początkowo razem z NDGC, od pownej epoki  NDGC zostaje w miejscu 
+
+Model z czasem rozszerza zasięg rekomendacji nie zmniejszając przy tym precyzji
+
+**Wyniki modelu w zależności od K**
+![alt text](ML/images/NeuMF_M_vs_K.png)
+
 |  | Mój NeuMF | Orginalne NeuMF       | Orginalne NeuMF z pretreningiem       |
 |-----------------|----------------|----------------|----------------|
-| HR@10 | 0.820 | 0.705 | 0.730 |
-| NDGC@10 | 0.597 | 0.426 | 0.447 |
+| HR@10 | 0.752 | 0.705 | 0.730 |
+| NDGC@10 | 0.521 | 0.426 | 0.447 |
 
 \* Oryginalne modele były trenowane na pełnym datasecie, przy stałej ilości `latent_dim` równej 64 (najleprze zaraportowane wyniki przez autorów)
+
+
 
 ## Model NeuMF_advanced
-**Wyniki wytrenowanego modelu**
+Jako podstawę urzyto model NeuMF z rozszerzeniem o komponent MLP "na końcu" modelu
+**Mój zaimplementowany model**  
+![alt text](ML/images/NeuMF_advanced_architecture.png)  
+
+**Przebieg szkolenia**
+![alt text](ML/images/NeuMF_advanced_E_vs_M.png)
+- `precision` - z czasem utrzymuje się na relatywnie stałym poziomie
+- `recall` - stale rośnie z czasem, początkowo razem z NDGC, od pownej epoki  NDGC zostaje w miejscu 
+
+Model z czasem rozszerza zasięg rekomendacji nie zmniejszając przy tym precyzji
+
+**Wyniki modelu w zależności od K**
+![alt text](ML/images/NeuMF_advanced_M_vs_K.png)
+
 |  | Mój NeuMF_advanced | Orginalne NeuMF       | Orginalne NeuMF z pretreningiem       |
 |-----------------|----------------|----------------|----------------|
-| HR@10 | 0.820 | 0.705 | 0.730 |
-| NDGC@10 | 0.597 | 0.426 | 0.447 |
+| HR@10 | 0.805 | 0.705 | 0.730 |
+| NDGC@10 | 0.583 | 0.426 | 0.447 |
 
 \* Oryginalne modele były trenowane na pełnym datasecie, przy stałej ilości `latent_dim` równej 64 (najleprze zaraportowane wyniki przez autorów)
+
+## Porównanie modeli
+
+|  | Mój MF | Mój NeuMF|Mój MF|Orginalne NeuMF       | Orginalne NeuMF z pretreningiem       |
+|-----------------|-|-|----------------|----------------|----------------|
+| HR@10 |0.752|0.803| 0.805 | 0.705 | 0.730 |
+| NDGC@10 |0.521|0.582| 0.583 | 0.426 | 0.447 |
+
+- Model NeuMF i NeuMF_advanced osiągnęły stabilność `precision` względem epok mimo rosnącego `recall`
+- Model NeuMF wykazuje znacznie leprze wyniki względem modelu MF
+- Przy szkoleniu model MF przy ilości negatywnych próbek więkrzych niż 1 na 1 pozytywną, przewiduje zawsze 0, dlatego trenowano przy ilości negatywnych próbek równej 1
+- Podobne zachowanie czasami zachodzi w modelach NeuMF i NeuMF_advanced jednak udało się to wyeliminować poprzez tuning dla objective\`u: 
+`ndgc@10*0.3 + ndgc@10*recall*0.4 + ndgc@10*precision*0.4`
+- W modelach NeuMF i NeuMF_advanced przy tunowaniu zdarzało się że model "przechylał" do przewidywania samych 0, jednak po pownej ilości epok "uczył się" poprawnego zachowania

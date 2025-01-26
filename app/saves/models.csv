@@ -1,2 +1,3 @@
+MF|Uproszczona implementacja Neural Collaborative Filtering Framework, nie zaleca się urzywać przy małej ilości wyporzyczeń.
 NeuMF|Prosta implementacja sieci NeuMF, nie zaleca się urzywać przy małej ilości wyporzyczeń.
-NeuMF_advanced|Prosta implementacja sieci NeuMF, nie zaleca się urzywać przy małej ilości wyporzyczeń.
+NeuMF_advanced|Zaawansowana implementacja sieci NeuMF, nie zaleca się urzywać przy małej ilości wyporzyczeń.

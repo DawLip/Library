@@ -290,6 +290,7 @@ def parse_dataset(target):
   None
   """
   interactions = create_interactions_file(dataset=target, file_name="borrowed_books.csv", folder="/datasets")
+  interactions.drop_duplicates()
   item_id_translation = create_items_ids_file(interactions, target=target, folder="/datasets")
   interactions = translate_item_id(interactions, item_id_translation, "item_id", "new_item_id", target=target, folder="/datasets")
   print(interactions)

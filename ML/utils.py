@@ -172,7 +172,7 @@ def make_metrics_vs_k_graphs(data, save=False, path_to_save=""):
   if not save:  plt.show()
   else: plt.savefig(f"{path_to_save}/metrics_vs_k.png")
   
-def load_dataset(dataset_path = "./datasets/ml-latest-small"):
+def load_dataset(dataset_path = "./datasets/ml-latest-small", size="1-10"):
   """
   Loads a dataset from given path.
 
@@ -194,7 +194,7 @@ def load_dataset(dataset_path = "./datasets/ml-latest-small"):
   """
   interactions_path = f"{dataset_path}/interaction_data.csv"
   negative_samples_path = f"{dataset_path}/negative_samples.csv"
-  train_data_path = f"{dataset_path}/train_data_1-10.csv"
+  train_data_path = f"{dataset_path}/train_data_{size}.csv"
   test_data_path = f"{dataset_path}/test_data.csv"
 
 

@@ -1,1 +1,1 @@
-{"latent_dim_mf": 93, "latent_dim_mlp": 8, "embeding_l2_mf": 0.07040089863700855, "embeding_l2_mlp": 0.00013722927524390666, "mlp_layers_num": 4, "mlp_layers_neurons": 28, "mlp_l2": 0.013525077950357532, "n_users": 610, "n_items": 9724}
+{"latent_dim_mf": 86, "latent_dim_mlp": 42, "embeding_l2_mf": 0.0006383832336430347, "embeding_l2_mlp": 1.2170734603223914e-06, "mlp_layers_num": 6, "mlp_layers_neurons": 19, "mlp_l2": 0.006615108675092881, "n_users": 610, "n_items": 9724}
