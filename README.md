@@ -120,10 +120,18 @@ Najpopularniejszymi metrykami w tej metodzie są:
 
 ## Model MF
 Prosta implementacja sieci Neural Collaborative Filtering Framework przedstawionej w pracy [Neural Collaborative Filtering](https://arxiv.org/pdf/1708.05031) z 2017 roku. Zamiast MLP została zastosowana jedynie warstwa predykcji.  
-**Model zaproponowany przez autorów badania:**
+**Model zaproponowany przez autorów badania:**  
 ![alt text](ML/images/NCFF.png)  
 **Mój zaimplementowany model**  
 ![alt text](ML/images/MF_architecture.png)  
+
+**Tuning history**
+ ![alt text](ML/images/MF_tuning_history.png)
+ **Waga hiperparametrów**
+ ![alt text](ML/images/MF_hp_importance.png)
+ **Parallel coordinate**
+ ![alt text](ML/images/MF_hp_parallel.png)
+
 **Przebieg szkolenia**
 ![alt text](ML/images/ML_E_vs_M.png)
 - `precision` - znacznie maleje z czasem, w kolejnych modelach udało się uzyskać utrzymywanie się statystyki z ilością epok
@@ -149,6 +157,13 @@ Podstawę do budowania modelu stanowi praca [Neural Collaborative Filtering](htt
 **Mój zaimplementowany model**  
 ![alt text](ML/images/NeuMF_architecture.png)  
 
+**Tuning history**
+ ![alt text](ML/images/NeuMF_tuning_history.png)
+ **Waga hiperparametrów**
+ ![alt text](ML/images/NeuMF_hp_importance.png)
+ **Parallel coordinate**
+ ![alt text](ML/images/NeuMF_hp_parallel.png)
+
 **Przebieg szkolenia**
 ![alt text](ML/images/NeuMF_E_vs_M.png)
 - `precision` - z czasem utrzymuje się na relatywnie stałym poziomie
@@ -172,6 +187,13 @@ Model z czasem rozszerza zasięg rekomendacji nie zmniejszając przy tym precyzj
 Jako podstawę urzyto model NeuMF z rozszerzeniem o komponent MLP "na końcu" modelu
 **Mój zaimplementowany model**  
 ![alt text](ML/images/NeuMF_advanced_architecture.png)  
+
+**Tuning history**
+ ![alt text](ML/images/NeuMF_advanced_tuning_history.png)
+ **Waga hiperparametrów**
+ ![alt text](ML/images/NeuMF_advanced_hp_importance.png)
+ **Parallel coordinate**
+ ![alt text](ML/images/NeuMF_advanced_hp_parallel.png)
 
 **Przebieg szkolenia**
 ![alt text](ML/images/NeuMF_advanced_E_vs_M.png)
